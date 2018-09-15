@@ -12,6 +12,6 @@ public class Main {
     private void testExample() {
         System.out.println(Joiner.on(",")
                 .skipNulls()
-                .join(Arrays.asList(1,2,3,4,5,null,6)));
+                .join(Arrays.asList(1, 2, 3, 4, 5, null, 6)));
     }
 }
