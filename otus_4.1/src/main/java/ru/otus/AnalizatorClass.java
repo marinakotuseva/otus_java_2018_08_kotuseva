@@ -50,7 +50,7 @@ public class AnalizatorClass {
             }
         }
 
-        Object instance = classToAnalize.getDeclaredConstructors()[0].newInstance();
+        Object instance = classToAnalize.newInstance();
         for (Method m : methodsToExecute) {
             System.out.println(m.invoke(instance));
         }
