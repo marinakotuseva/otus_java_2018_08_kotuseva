@@ -34,8 +34,8 @@ public class AnalizatorClass {
             }
         }
 
-        Object instance = classToAnalize.newInstance();
         for (Method m : methodsToExecute) {
+            Object instance = classToAnalize.newInstance();
             for (Method b: beforeExecute){
                 b.invoke(instance, new Object[]{null});
             }
