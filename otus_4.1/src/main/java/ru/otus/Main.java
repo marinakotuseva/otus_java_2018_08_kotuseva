@@ -18,31 +18,40 @@ public class Main {
 
 class Test1{
     @AnnotationClass.After
-    public static void AfterMethod(){
-        System.out.println("Result of method which is executed after all other annotated methods and methods w/o them");
+    public static void AfterMethod(Integer test){
+        System.out.println("Result of method which is executed after test method");
     }
 
-    public void NonAnnotatedMethod(){
+    public void NonAnnotatedMethod(Integer test){
         System.out.println("Result of method without any annotations");
     }
 
-    @AnnotationClass.SomeTestAnnotation
-    public static void SomethingAdditional(){
-        System.out.println("Some additional results here");
+    @AnnotationClass.Test
+    public static void SomethingAdditional(Integer test){
+        try {
+            System.out.println("Some additional test results here");
+        } catch (Exception e) {
+            System.out.println("Error while performing method");
+        }
+
     }
 
     @AnnotationClass.Test
-    public static void ExecTestMethod(){
-        System.out.println("Test method executed");
+    public static void ExecTestMethod(Integer test){
+        try {
+            System.out.println("Test method executed");
+        } catch (Exception e) {
+            System.out.println("Error while performing method");
+        }
     }
 
     @AnnotationClass.Before
-    public static void BeforeMethod(){
-        System.out.println("Result of method which is executed before all others");
+    public static void BeforeMethod(Integer test){
+        System.out.println("Result of method which is executed before test method");
     }
     @AnnotationClass.Before
-    public static void BeforeMethod2(){
-        System.out.println("Result of ANOTHER method with is executed before all others");
+    public static void BeforeMethod2(Integer test){
+        System.out.println("Result of ANOTHER method with is executed before test method");
     }
 }
 
