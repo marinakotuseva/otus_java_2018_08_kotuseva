@@ -18,40 +18,30 @@ public class Main {
 
 class Test1{
     @AnnotationClass.After
-    public static void AfterMethod(Integer test){
+    public static void AfterMethod() throws InterruptedException {
         System.out.println("Result of method which is executed after test method");
     }
 
-    public void NonAnnotatedMethod(Integer test){
-        System.out.println("Result of method without any annotations");
+
+    @AnnotationClass.Test
+    public static void SomethingAdditional() throws InterruptedException {
+        System.out.println("TEST1 results here");
     }
 
     @AnnotationClass.Test
-    public static void SomethingAdditional(Integer test){
-        try {
-            System.out.println("Some additional test results here");
-        } catch (Exception e) {
-            System.out.println("Error while performing method");
-        }
-
-    }
-
-    @AnnotationClass.Test
-    public static void ExecTestMethod(Integer test){
-        try {
-            System.out.println("Test method executed");
-        } catch (Exception e) {
-            System.out.println("Error while performing method");
-        }
+    public static void ExecTestMethod() throws InterruptedException {
+        System.out.println("Test2 method executed");
     }
 
     @AnnotationClass.Before
-    public static void BeforeMethod(Integer test){
+    public static void BeforeMethod() throws InterruptedException {
         System.out.println("Result of method which is executed before test method");
     }
     @AnnotationClass.Before
-    public static void BeforeMethod2(Integer test){
-        System.out.println("Result of ANOTHER method with is executed before test method");
+    public static void BeforeMethod2() throws Exception {
+            //System.out.println("Result of ANOTHER method with is executed before test method");
+            throw new Exception("Custom Error message");
+
     }
 }
 

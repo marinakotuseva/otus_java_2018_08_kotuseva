@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnalizatorClass {
-    public static void AnalizeAnnotations(Class<Test1> classToAnalize) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static void AnalizeAnnotations(Class<Test1> classToAnalize) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         List<Method> methodsToExecute = new ArrayList<>();
         List<Method> beforeExecute = new ArrayList<>();
         List<Method> afterExecute = new ArrayList<>();
@@ -36,12 +36,28 @@ public class AnalizatorClass {
 
         for (Method m : methodsToExecute) {
             Object instance = classToAnalize.newInstance();
-            for (Method b: beforeExecute){
-                b.invoke(instance, new Object[]{null});
+            for (Method b : beforeExecute) {
+                try {
+                    b.invoke(instance);
+                } catch (InvocationTargetException e) {
+                    System.out.println("Error while performing method " + b.getName() + ": " + e.getCause().getMessage());
+                    //e.printStackTrace();
+                }
             }
-            m.invoke(instance, new Object[]{null});
+            try {
+                m.invoke(instance);
+            } catch (InvocationTargetException e) {
+                System.out.println("Error while performing method " + m.getName() + ": " + e.getCause().getMessage());
+                //e.printStackTrace();
+            }
+
             for (Method a: afterExecute){
-                a.invoke(instance, new Object[]{null});
+                try {
+                    a.invoke(instance);
+                } catch (InvocationTargetException e) {
+                    System.out.println("Error while performing method " + a.getName() + ": " + e.getCause().getMessage());
+                    //e.printStackTrace();
+                }
             }
         }
     }
