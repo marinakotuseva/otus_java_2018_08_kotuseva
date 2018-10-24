@@ -14,12 +14,18 @@ public class Main {
 
     }
 
+    public static int calc(){
+        int i = 0xff - 0xc0;
+        return i;
+    }
 }
 
 class Test1{
+
     @AnnotationClass.After
     public static void AfterMethod() throws InterruptedException {
         System.out.println("Result of method which is executed after test method");
+        System.out.println(Main.calc());
     }
 
 
