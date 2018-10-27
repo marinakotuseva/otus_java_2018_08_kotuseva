@@ -9,7 +9,8 @@ public class GarbageCollector {
 
         List<GarbageCollectorMXBean> garbageCollectors = ManagementFactory.getGarbageCollectorMXBeans();
         for(GarbageCollectorMXBean gc:garbageCollectors){
-            System.out.println("Name of GC: "+ gc.getName() + ", Collection #"+ gc.getCollectionCount() + ", Collection took "+ gc.getCollectionTime()/1000/60 + " minutes.");
+            //System.out.println("Name of GC: "+ gc.getName() + ", Collection #"+ gc.getCollectionCount() + ", Collection took "+ gc.getCollectionTime()/1000/60 + " minutes.");
+            System.out.println("Name of GC: "+ gc.getName() + ", Collection #"+ gc.getCollectionCount() + ", Collection took "+ gc.getCollectionTime() + " ms.");
         }
     }
 }
