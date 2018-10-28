@@ -1,5 +1,6 @@
 package ru.otus;
 
+import java.lang.ref.SoftReference;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ public class CacheEngine<K, V> {
     private final int maxElements;
     private final long lifeTimeMs;
 
-    private final Map<K, MapElement<K,V>> elements = new LinkedHashMap<>();
+    private final Map<K, SoftReference<MapElement<K, V>>> elements = new LinkedHashMap<>();
 
     CacheEngine(int m, long l) {
         this.maxElements = m;
@@ -18,20 +19,20 @@ public class CacheEngine<K, V> {
         if (elements.size() == maxElements){
             K firstKey = elements.keySet().iterator().next();
             System.out.println(firstKey);
-            System.out.println("->> Deleting from cache element " + elements.get(firstKey).getValue() + " due to size exceeding");
+            System.out.println("->> Deleting from cache element " + elements.get(firstKey) + " due to size exceeding");
             elements.remove(firstKey);
         }
-        elements.put(element.getKey(), element);
+        elements.put(element.getKey(), new SoftReference<>(element));
         System.out.println("Added to cache " + element.getKey() + " " + element.getValue());
 
     }
 
-    public V get(K key){
-        MapElement<K,V> element = elements.get(key);
+    public SoftReference<MapElement<K, V>> get(K key){
+        SoftReference<MapElement<K, V>> element = elements.get(key);
         if (element == null) {
             return null;
         } else {
-            return element.getValue();
+            return element;
         }
     }
 
