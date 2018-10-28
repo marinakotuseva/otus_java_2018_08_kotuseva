@@ -1,6 +1,7 @@
 package ru.otus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Main {
     public static void main (String[] args) {
@@ -10,14 +11,11 @@ public class Main {
         s.add(",");
         s.add(" ");
         s.add("World");
-        //System.out.println(s.size());
         System.out.println(s.toString());
-        //s.sort();
-        //MyArrayList.sort();
 
 
         MyArrayList<String> s2 = new MyArrayList<String>();
-        MyArrayList.copy(s, s2);
+        java.util.Collections.copy(s, s2);
         System.out.println(s2.toString());
 
     }

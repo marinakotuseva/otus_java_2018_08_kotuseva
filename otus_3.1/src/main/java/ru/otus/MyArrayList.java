@@ -1,5 +1,6 @@
 package ru.otus;
 
+import javax.lang.model.type.NullType;
 import java.util.*;
 
 
@@ -28,9 +29,7 @@ class MyArrayList <T> implements List<T> {
     public int size() {
         int count = 0;
         for (Integer i  = 0; i < data.length; i++) {
-            if (data[i] != null) {
-                ++count;
-            }
+            ++count;
         }
         return count;
     }
@@ -59,15 +58,13 @@ class MyArrayList <T> implements List<T> {
     }
 
     public boolean add(T t){
-        data[elCount] = t;
-        ++elCount;
+        //if (t == null) {throw new NullPointerException();}
+        if (t != null) {
+            data[elCount] = t;
+            ++elCount;
+        }
         return true;
     }
-
-    //private void add(T t, Object[] elementData, int size) {
-    //    modCount++;
-    //    add(t, elementData, size);
-    //}
 
     public boolean remove(Object o) {
         return false;
@@ -148,9 +145,5 @@ class MyArrayList <T> implements List<T> {
             }
         }
         return s;
-    }
-
-    static <T> void copy(List<? super T> dest, List<? extends T> src){
-        System.arraycopy(src, 0, dest, 0, src.size());
     }
 }
