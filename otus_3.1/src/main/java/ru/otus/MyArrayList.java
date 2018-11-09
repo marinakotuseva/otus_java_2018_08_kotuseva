@@ -6,7 +6,7 @@ import java.util.*;
 
 class MyArrayList <T> implements List<T> {
 
-    private static final int DEFAULT_CAPACITY = 20;
+    private static final int DEFAULT_CAPACITY = 1;
     private int elCount;
     private Object[] data;
 
@@ -42,11 +42,11 @@ class MyArrayList <T> implements List<T> {
         throw new UnsupportedOperationException("Not supported");
     }
     public boolean contains(Object o) {
-        return false;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public Iterator<T> iterator() {
-        return null;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public Object[] toArray() {
@@ -54,11 +54,18 @@ class MyArrayList <T> implements List<T> {
     }
 
     public <T1> T1[] toArray(T1[] a) {
-        return null;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public boolean add(T t){
-        //if (t == null) {throw new NullPointerException();}
+        if (data.length <= elCount){
+            Object[] dataNew = new Object[data.length*2];
+            for (int i = 0; i < data.length; i++) {
+                dataNew[i] = data[i];
+            }
+            data = dataNew;
+            dataNew = null;
+        }
         if (t != null) {
             data[elCount] = t;
             ++elCount;
@@ -67,15 +74,15 @@ class MyArrayList <T> implements List<T> {
     }
 
     public boolean remove(Object o) {
-        return false;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public boolean containsAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public boolean addAll(Collection<? extends T> c) {
-        return false;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public boolean addAll(int index, Collection<? extends T> c) {
@@ -90,11 +97,11 @@ class MyArrayList <T> implements List<T> {
     }
 
     public boolean removeAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public boolean retainAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public void clear() {
@@ -102,11 +109,11 @@ class MyArrayList <T> implements List<T> {
     }
 
     public T get(int index) {
-        return null;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public T set(int index, T element) {
-        return null;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public void add(int index, T element) {
@@ -114,27 +121,32 @@ class MyArrayList <T> implements List<T> {
     }
 
     public T remove(int index) {
-        return null;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public int indexOf(Object o) {
-        return 0;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public int lastIndexOf(Object o) {
-        return 0;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public ListIterator<T> listIterator() {
-        return null;
+        ListIterator<T> i = this.listIterator();
+        for (Object e : data) {
+            i.next();
+            i.set((T) e);
+        }
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public ListIterator<T> listIterator(int index) {
-        return null;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public String toString() {
