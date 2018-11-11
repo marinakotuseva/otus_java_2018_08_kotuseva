@@ -1,124 +1,68 @@
 package ru.otus;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
 public class ATM {
-    //private float balance;
-    private int banknotes10Amount;
-    private int banknotes50Amount;
-    private int banknotes100Amount;
+    private Integer atmBalance;
+    private Map atmBanknotes = new TreeMap();
+    private Integer balance;
 
-    public float getBalance(){
-        return getBanknotes10Amount()*10 + getBanknotes50Amount()*50 + getBanknotes100Amount()*100;
+    public ATM(){
+        for (Banknote b:
+                Banknote.values()) {
+            atmBanknotes.put(b, 0);
+        }
     }
 
-    public static void takeBanknote(ATM atm, Banknote banknote){
-        banknote.AddToBalance(atm);
+
+    public String getAtmBalance(){
+        Integer balance = 0;
+        var str = "";
+        for (Banknote b:
+                Banknote.values()) {
+            balance += (int)atmBanknotes.get(b)*b.getNom();
+            str+= (int)atmBanknotes.get(b) + " banknotes by " + b.getNom() + ", ";
+        }
+        this.balance = balance;
+        return str;
     }
 
-    public void setBanknotes10(int banknotes10Amount) {
-        this.banknotes10Amount = banknotes10Amount;
-    }
-    public void setBanknotes50(int banknotes50Amount) {
-        this.banknotes50Amount = banknotes50Amount;
-    }
-    public void setBanknotes100(int banknotes100Amount) {
-        this.banknotes100Amount = banknotes100Amount;
+    public void takeBanknote(Banknote b){
+        atmBanknotes.put(b, (int)atmBanknotes.get(b)+1);
+        System.out.println("Taken 1 banknote by " + b.getNom());
+
     }
 
-    public int getBanknotes10Amount() {
-        return banknotes10Amount;
-    }
-    public int getBanknotes50Amount() { return banknotes50Amount; }
-    public int getBanknotes100Amount() {
-        return banknotes100Amount;
-    }
+    public boolean getCash(Integer money){
+        // In reverse order
+        Map<Banknote, Integer> sortedAtmBanknotes = new TreeMap(Collections.reverseOrder());
+        sortedAtmBanknotes.putAll(atmBanknotes);
 
-    public String getCash(ATM atm, double money){
-        boolean haveCash = true;
-        int needed100 = 0;
-        int needed50 = 0;
-        int needed10 = 0;
-        int got10 = 0;
-        int got50 = 0;
-        int got100 = 0;
-        String res;
-        double leftMoney;
+        System.out.println("Want to withdraw " + money);
+        if (this.balance < money){
+            System.out.println("Not enough cash in the ATM");
+            return false;
+        }
 
-        float currentCash = atm.getBalance();
-
-        if (money > currentCash){
-            haveCash = false;
-        } else {
-            needed100 = (int)money/100;
-            //System.out.println("needed100 = " + needed100);
-            //System.out.println("banknotes100Amount = " + atm.banknotes100Amount);
-            leftMoney = money - needed100*100;
-            if (needed100 <= atm.banknotes100Amount){
-                got100 = needed100;
-                //System.out.println(leftMoney);
-                needed50 = (int)leftMoney/50;
-                //System.out.println("needed50 = " + needed50);
-                //System.out.println("banknotes50Amount = " + atm.banknotes50Amount);
-                //leftMoney = leftMoney - needed50*50;
-                System.out.println(leftMoney);
-                if ((needed50 <= atm.banknotes50Amount)){
-                    got50 = needed50;
-                    needed10 = (int)leftMoney/10;
-                    leftMoney = leftMoney - needed10*10;
-                    //System.out.println("needed10 = " + needed10);
-                    //System.out.println("banknotes10Amount = " + atm.banknotes10Amount);
-                    //System.out.println(leftMoney);
-                    if (leftMoney > 0){
-                        haveCash = false;
-                    } else if ( needed10 <= atm.banknotes10Amount){
-                        got10 = needed10;
-                    }
-                } else {
-                    needed10 = (int)leftMoney/10;
-                    leftMoney = leftMoney - needed10*10;
-                    //System.out.println("needed10 = " + needed10);
-                    //System.out.println("banknotes10Amount = " + atm.banknotes10Amount);
-                    //System.out.println(leftMoney);
-                    if (leftMoney > 0) {
-                        haveCash = false;
-                    } else {
-                        got10 = needed10;
-                    }
-                }
-
+        for (var entry:
+                sortedAtmBanknotes.entrySet()) {
+            var currentBn = entry.getKey();
+            var currentNom = currentBn.getNom();
+            var haveBanknotes = entry.getValue();
+            var needBanknotes = money / currentNom;
+            //System.out.println("need " + needBanknotes + " banknote by " + currentNom);
+            //System.out.println("have " + haveBanknotes + " banknote by " + currentNom);
+            if (haveBanknotes < needBanknotes) {
+                //do nothing - try another nominal?
             } else {
-                needed50 = (int)money/50;
-                //System.out.println("needed50 = " + needed50);
-                //System.out.println("banknotes50Amount = " + atm.banknotes50Amount);
-                leftMoney = money - needed50*50;
-                if (needed50 <= atm.banknotes50Amount){
-                    got50 = needed50;
-                    needed10 = (int)leftMoney/10;
-                    leftMoney = leftMoney - needed10*10;
-                    if (needed10 < atm.banknotes10Amount & leftMoney > 0){
-                        haveCash = false;
-                    } else {
-                        got10 = needed10;
-                    }
-                } else {
-                    needed10 = (int)money/10;
-                    leftMoney = leftMoney - needed10*10;
-                    if (leftMoney > 0) {
-                        haveCash = false;
-                    } else {
-                        got10 = needed10;
-                    }
-                }
+                atmBanknotes.put(currentBn, (int)atmBanknotes.get(currentBn)-needBanknotes);
+                money -= needBanknotes*currentNom;
+                System.out.println("Withdrawn " + needBanknotes + " banknote by " + currentNom);
             }
 
         }
-
-
-        if (!haveCash){
-            res = "Can't return cash";
-        } else {
-            res = "You have " + got100 + " banknotes by 100, " + got50 + " banknotes by 50, " + got10 +  " banknotes by 10";
-        }
-
-        return res;
+        return true;
     }
 }

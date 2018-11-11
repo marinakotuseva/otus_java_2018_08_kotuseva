@@ -1,29 +1,18 @@
 package ru.otus;
 
 
-public abstract class Banknote {
-    abstract void AddToBalance(ATM atm);
-}
-class Banknote10 extends Banknote {
-    @Override
-    void AddToBalance(ATM atm){
-        int current10 = atm.getBanknotes10Amount();
-        atm.setBanknotes10(current10 + 1);
-    }
-}
-class Banknote50 extends Banknote {
-    @Override
-    void AddToBalance(ATM atm){
-        int current50 = atm.getBanknotes50Amount();
-        atm.setBanknotes50(current50 + 1);
+public enum Banknote {
+    BANKNOTE10(10),
+    BANKNOTE50(50),
+    BANKNOTE100(100);
+
+    private Integer nom;
+
+    Banknote(Integer i) {
+        this.nom = i;
     }
 
-}
-class Banknote100 extends Banknote {
-    @Override
-    void AddToBalance(ATM atm){
-        int current100 = atm.getBanknotes100Amount();
-        atm.setBanknotes100(current100 + 1);
+    public Integer getNom() {
+        return nom;
     }
-
 }
