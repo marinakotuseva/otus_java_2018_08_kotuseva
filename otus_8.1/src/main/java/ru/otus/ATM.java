@@ -1,21 +1,51 @@
 package ru.otus;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ATM {
-    private Integer atmBalance;
     private Map atmBanknotes = new TreeMap();
+    private Map initialBanknotes = new TreeMap();
     private Integer balance;
 
-    public ATM(){
+    public String getName() {
+        return name;
+    }
+
+    private String name;
+
+    public ATM(String name){
         for (Banknote b:
                 Banknote.values()) {
             atmBanknotes.put(b, 0);
+            initialBanknotes.put(b, 0);
         }
+        balance = 0;
+        this.name = name;
     }
 
+    public void setInitialBanknotes(Map initialBanknotes) {
+        for (Banknote b:
+                Banknote.values()) {
+            if (initialBanknotes.containsKey(b)){
+                initialBanknotes.put(b, initialBanknotes.get(b));
+            } else {
+                initialBanknotes.put(b, 0);
+            }
+        }
+        this.initialBanknotes = initialBanknotes;
+    }
+
+    public void initializeATM(){
+        for (Banknote b:
+                Banknote.values()) {
+            if (initialBanknotes.containsKey(b)){
+                atmBanknotes.put(b, initialBanknotes.get(b));
+            } else {
+                atmBanknotes.put(b, 0);
+            }
+        }
+        System.out.println(name + " initialized with " + getAtmBalance());
+    }
 
     public String getAtmBalance(){
         Integer balance = 0;
@@ -23,10 +53,15 @@ public class ATM {
         for (Banknote b:
                 Banknote.values()) {
             balance += (int)atmBanknotes.get(b)*b.getNom();
+            var d = b.getNom();
             str+= (int)atmBanknotes.get(b) + " banknotes by " + b.getNom() + ", ";
         }
         this.balance = balance;
         return str;
+    }
+
+    public Integer getBalanceInteger(){
+        return this.balance;
     }
 
     public void takeBanknote(Banknote b){
