@@ -26,17 +26,17 @@ public class Main {
 
         // ATM department
         ATMDepartment dep = new ATMDepartment();
-        HashMap<Integer, ATM> atmList = new HashMap();
-        atmList.put(0, atm);
-        atmList.put(1, atm2);
-        dep.setAtmList(atmList);
+        HashMap<Integer, ATM> atms = new HashMap();
+        atms.put(0, atm);
+        atms.put(1, atm2);
+        dep.setAtms(atms);
 
         Integer totalBalance = dep.getTotalBalance();
-        System.out.println("Total balance of " + atmList.size() + " ATMs is " + totalBalance);
+        System.out.println("Total balance of " + atms.size() + " ATMs is " + totalBalance);
 
         dep.initializeATMs();
         totalBalance = dep.getTotalBalance();
-        System.out.println("Total balance of " + atmList.size() + " ATMs after re-initializing is " + totalBalance);
+        System.out.println("Total balance of " + atms.size() + " ATMs after re-initializing is " + totalBalance);
 
 
     }

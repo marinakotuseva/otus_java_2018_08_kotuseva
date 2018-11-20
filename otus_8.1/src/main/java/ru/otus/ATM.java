@@ -3,9 +3,9 @@ package ru.otus;
 import java.util.*;
 
 public class ATM {
-    private Map atmBanknotes = new TreeMap();
-    private Map initialBanknotes = new TreeMap();
-    private Integer balance;
+    private Map<Banknote, Integer> atmBanknotes = new EnumMap<Banknote, Integer>(Banknote.class);
+    private Map<Banknote, Integer> initialBanknotes = new EnumMap<Banknote, Integer>(Banknote.class);
+    private int balance;
 
     public String getName() {
         return name;

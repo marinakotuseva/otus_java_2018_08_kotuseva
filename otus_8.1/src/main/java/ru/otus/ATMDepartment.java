@@ -1,18 +1,19 @@
 package ru.otus;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ATMDepartment {
-    private HashMap<Integer, ATM> atmList;
+    private Map<Integer, ATM> atms;
 
-    public void setAtmList(HashMap<Integer, ATM> atmList) {
-        this.atmList = atmList;
+    public void setAtms(HashMap<Integer, ATM> atms) {
+        this.atms = atms;
     }
 
     public Integer getTotalBalance(){
         Integer totalBalance = 0;
         for (var entry :
-                atmList.entrySet()) {
+                atms.entrySet()) {
             var atm = entry.getValue();
             var currentb = atm.getBalanceInteger();
             totalBalance+= currentb;
@@ -22,7 +23,7 @@ public class ATMDepartment {
 
     public void initializeATMs(){
         for (var entry :
-                atmList.entrySet()) {
+                atms.entrySet()) {
             var atm = entry.getValue();
             atm.initializeATM();
         }
