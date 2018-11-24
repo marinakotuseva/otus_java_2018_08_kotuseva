@@ -33,23 +33,18 @@ public class Main {
             UserDataSet user = new UserDataSet(1, "Jack", 10);
             UserDataSet user2 = new UserDataSet(2, "Daniel", 13);
 
-            UserDataSet.save(user);
+            Executor ex = new Executor();
+            ex.save(user);
             System.out.println("user added");
-            UserDataSet.save(user2);
+            ex.save(user2);
             System.out.println("user added");
 
-            UserDataSet loadedUser = UserDataSet.load(2, UserDataSet.class);
+            UserDataSet loadedUser = ex.load(2, UserDataSet.class);
             System.out.println("user loaded: " + loadedUser.getName() + ", " + loadedUser.getAge());
-
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-    }
-
-    public void executorNoResult(Statement s, String query) throws SQLException {
-        s.executeUpdate(query);
     }
 }
