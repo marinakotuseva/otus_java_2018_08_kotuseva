@@ -16,7 +16,7 @@ public class Main {
         pers.bool = true;
         pers.intNum = 3;
 
-        pers.address = new HashMap<>();
+        pers.address = new TreeMap<>();
         pers.address.put("street", "BakerStreet");
         pers.address.put("house", "221b");
 
@@ -40,6 +40,9 @@ public class Main {
         System.out.println("=======");
         System.out.println("Gson:   " + gson.toJson(List.of(1, 2, 3, 4)));
         System.out.println("Custom: "  + conv.objectToJson(List.of(1, 2, 3, 4)));
+        System.out.println("=======");
+        System.out.println("Gson: " + gson.toJson(Map.of("key", "val")));
+        System.out.println("Custom: " + conv.objectToJson(Map.of("key", "val")));
 
 
     }

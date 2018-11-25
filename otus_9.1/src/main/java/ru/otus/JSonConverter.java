@@ -42,7 +42,8 @@ public class JSonConverter {
                 s = s.substring(0, s.length() - 1);
                 s+="]";
                 res = s;
-            } else if (objectClass.isAssignableFrom(HashMap.class)) {
+            //} else if (objectClass.isAssignableFrom(HashMap.class)) {
+            } else if (Map.class.isAssignableFrom(objectClass)) {
                 Map<Object, Object> objectToMap = (Map) object;
                 res = "{";
                 for (var entry :
@@ -80,7 +81,7 @@ public class JSonConverter {
 
             if (c.isArray()) {
                 res.append(toJson(object));
-            } else if (object instanceof List) {
+            } else if (object instanceof List || object instanceof Map) {
                 res.append(toJson(object));
             } else {
                 res.append("{");
