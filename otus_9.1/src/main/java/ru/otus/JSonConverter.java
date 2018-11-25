@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JSonConverter {
@@ -58,7 +59,7 @@ public class JSonConverter {
                 if (object == null) {
                     res = "\"" + null + "\"";
                 } else {
-                    if (object instanceof Integer || object instanceof Boolean) {
+                    if (object instanceof Integer || object instanceof Boolean || object instanceof List) {
                         res = object.toString();
                     } else {
                         res = "\"" + object.toString() + "\"";
@@ -70,27 +71,38 @@ public class JSonConverter {
     }
 
     public static String objectToJson(Object object){
+        if (object == null){
+            return null;
+        } else {
 
-        StringBuilder res = new StringBuilder();
-        res.append("{");
+            Class c = object.getClass();
+            StringBuilder res = new StringBuilder();
+            if (c.isArray()) {
+                res.append(toJson(object));
+            } else if (object instanceof List) {
+                res.append(toJson(object));
+            } else {
+                for (Field f : object.getClass().getDeclaredFields()) {
+                    String fName = f.getName();
 
-        for (Field f: object.getClass().getDeclaredFields()) {
-            String fName = f.getName();
-
-            try {
-                f.setAccessible(true);
-                Object fValue = f.get(object);
-                res.append("\"" + fName + "\"");
-                res.append(":");
-                res.append(toJson(fValue));
-            } catch (Exception e){
-                res.append("\"" + "error getting value" + "\"");
-                e.printStackTrace();
+                    res.append("{");
+                    try {
+                        if (f.isAccessible() == false)
+                        {f.setAccessible(true);}
+                        Object fValue = f.get(object);
+                        res.append("\"" + fName + "\"");
+                        res.append(":");
+                        res.append(toJson(fValue));
+                    } catch (Exception e) {
+                        res.append("\"" + "error getting value" + "\"");
+                        e.printStackTrace();
+                    }
+                }
+                res.append(",");
+                res.deleteCharAt(res.lastIndexOf(","));
+                res.append("}");
             }
-            res.append(",");
+            return res.toString();
         }
-        res.deleteCharAt(res.lastIndexOf(","));
-        res.append("}");
-        return res.toString();
     }
 }

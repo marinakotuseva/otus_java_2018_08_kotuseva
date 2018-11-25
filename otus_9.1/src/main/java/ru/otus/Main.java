@@ -27,13 +27,20 @@ public class Main {
         pers.coll.add(0, "2");
 
         JSonConverter conv = new JSonConverter();
-
-        String res = conv.objectToJson(pers);
-        System.out.println("=======");
-        System.out.println("Custom: " + res);
-
         Gson gson = new Gson();
+
         System.out.println("Gson:   " + gson.toJson(pers));
+        System.out.println("Custom: " + conv.objectToJson(pers));
+        System.out.println("=======");
+        System.out.println("Gson:   " + gson.toJson(null));
+        System.out.println("Custom: "  +conv.objectToJson(null));
+        System.out.println("=======");
+        System.out.println("Gson:   " + gson.toJson(new int[] {1, 2, 3, 4}));
+        System.out.println("Custom: "  + conv.objectToJson(new int[] {1, 2, 3, 4}));
+        System.out.println("=======");
+        System.out.println("Gson:   " + gson.toJson(List.of(1, 2, 3, 4)));
+        System.out.println("Custom: "  + conv.objectToJson(List.of(1, 2, 3, 4)));
+
 
     }
 
