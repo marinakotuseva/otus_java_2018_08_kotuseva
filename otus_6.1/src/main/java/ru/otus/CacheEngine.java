@@ -1,16 +1,13 @@
 package ru.otus;
 
 import java.lang.ref.SoftReference;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CacheEngine<K, V> {
     private final int maxElements;
     private final long lifeTimeMs;
 
-    private final Map<K, SoftReference<MapElement<K, V>>> elements = new Map<K, SoftReference<MapElement<K, V>>>() {
+    private final HashMap<K, SoftReference<MapElement<K, V>>> elements = new HashMap<K, SoftReference<MapElement<K, V>>>() {
         @Override
         public int size() {
             return 0;
