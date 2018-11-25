@@ -31,7 +31,7 @@ public class JSonConverter {
                 s = s.substring(0, s.length() - 1);
                 s+="]";
                 res = s;
-            } else if (objectClass.isAssignableFrom(Collection.class)) {
+            } else if (Collection.class.isInstance(object)) {
                 Collection objectToCollection = (Collection) object;
                 String s ="[";
                 for (Object o :
@@ -77,15 +77,16 @@ public class JSonConverter {
 
             Class c = object.getClass();
             StringBuilder res = new StringBuilder();
+
             if (c.isArray()) {
                 res.append(toJson(object));
             } else if (object instanceof List) {
                 res.append(toJson(object));
             } else {
+                res.append("{");
                 for (Field f : object.getClass().getDeclaredFields()) {
                     String fName = f.getName();
 
-                    res.append("{");
                     try {
                         if (f.isAccessible() == false)
                         {f.setAccessible(true);}
@@ -97,8 +98,8 @@ public class JSonConverter {
                         res.append("\"" + "error getting value" + "\"");
                         e.printStackTrace();
                     }
+                    res.append(",");
                 }
-                res.append(",");
                 res.deleteCharAt(res.lastIndexOf(","));
                 res.append("}");
             }
