@@ -7,67 +7,7 @@ public class CacheEngine<K, V> {
     private final int maxElements;
     private final long lifeTimeMs;
 
-    private final HashMap<K, SoftReference<MapElement<K, V>>> elements = new HashMap<K, SoftReference<MapElement<K, V>>>() {
-        @Override
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean containsKey(Object key) {
-            return false;
-        }
-
-        @Override
-        public boolean containsValue(Object value) {
-            return false;
-        }
-
-        @Override
-        public SoftReference<MapElement<K, V>> get(Object key) {
-            return null;
-        }
-
-        @Override
-        public SoftReference<MapElement<K, V>> put(K key, SoftReference<MapElement<K, V>> value) {
-            return null;
-        }
-
-        @Override
-        public SoftReference<MapElement<K, V>> remove(Object key) {
-            return null;
-        }
-
-        @Override
-        public void putAll(Map<? extends K, ? extends SoftReference<MapElement<K, V>>> m) {
-
-        }
-
-        @Override
-        public void clear() {
-
-        }
-
-        @Override
-        public Set<K> keySet() {
-            return null;
-        }
-
-        @Override
-        public Collection<SoftReference<MapElement<K, V>>> values() {
-            return null;
-        }
-
-        @Override
-        public Set<Entry<K, SoftReference<MapElement<K, V>>>> entrySet() {
-            return null;
-        }
-    };
+    private final HashMap<K, SoftReference<MapElement<K, V>>> elements = new HashMap<K, SoftReference<MapElement<K, V>>>();
 
     CacheEngine(int m, long l) {
         this.maxElements = m;
