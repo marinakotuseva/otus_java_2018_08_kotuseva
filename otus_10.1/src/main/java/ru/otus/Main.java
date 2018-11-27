@@ -7,13 +7,12 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        //Class.forName ("org.h2.Driver");
+
         Executor ex = new Executor();
 
         DBService.createTableForClass(UserDataSet.class);
         DBService.clearTable(UserDataSet.class);
-
-
+        System.out.println("===");
 
         for (int i = 0; i < 10; i++) {
             String name = "Name"+i;
@@ -21,18 +20,11 @@ public class Main {
             System.out.println("User " + name + " saved");
         }
 
+        System.out.println("===");
         UserDataSet loadedUser = ex.load(2, UserDataSet.class);
         System.out.println("user loaded: " + loadedUser.getName() + ", " + loadedUser.getAge());
 
-//        System.out.println("=====");
-//        Class [] constrParams = { long.class, String.class, int.class};
-//        Object [] constrValues = {  1, "Mike", 15};
-//        try {
-//            UserDataSet u = UserDataSet.class.getConstructor(constrParams).newInstance(constrValues);
-//            System.out.println(u);
-//        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
-//        }
+
 
     }
 }

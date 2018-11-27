@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Executor {
-    private Object object;
 
     public  <T extends DataSet> void save(T object) {
         Class clazz = object.getClass();
@@ -25,7 +24,7 @@ public class Executor {
         insertIntoTableQuery.append("(");
         insertIntoTableValues.append(" values(");
 
-        LinkedHashMap<String, Object> fields = ClassFields.getClassFields(clazz);
+        LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
         for (Map.Entry entry: fields.entrySet()
         ) {
             Object fName = entry.getKey();
@@ -81,12 +80,8 @@ public class Executor {
         }
     }
     public  <T extends DataSet> UserDataSet load(long id, Class<T> clazz){
-        //Class [] constrParams;
-        //Object [] constrValues;
 
         List<Class> constrParamsList = new ArrayList<Class>();
-        //where.add( ContactsContract.Contacts.HAS_PHONE_NUMBER+"=1" );
-        //where.add( ContactsContract.Contacts.IN_VISIBLE_GROUP+"=1" );
 
         String tName = getTableNameForClass(clazz);
 
@@ -96,7 +91,7 @@ public class Executor {
         StringBuilder selectByID = new StringBuilder();
         selectByID.append("select ");
 
-        LinkedHashMap<String, Object> fields = ClassFields.getClassFields(clazz);
+        LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
         for (Map.Entry entry: fields.entrySet()
         ) {
             Object fName = entry.getKey();
@@ -108,9 +103,7 @@ public class Executor {
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }
-            //f.setAccessible(true);
             Class fClass = f.getType();
-            System.out.println("fClass="+fClass);
             constrParamsList.add(fClass);
         }
 
@@ -135,8 +128,6 @@ public class Executor {
                 Object sqlValue;
                 String fName = (String)entry.getKey();
                 Object fType = entry.getValue();
-                System.out.println("132 " + fType);
-                System.out.println("132 " + fType);
                 if (fType == Long.class) {
                     sqlValue = result.getLong(fName);
                 } else if (fType == String.class) {
@@ -145,19 +136,13 @@ public class Executor {
                     sqlValue = result.getInt(fName);
                 }
                 constrParamsValues.add(sqlValue);
-                System.out.println("sqlValue="+sqlValue);
             }
 
             Object[] constrValues = new Object[constrParamsValues.size() ];
             constrParamsValues.toArray(constrValues);
-            for (int j = 0; j < constrValues.length; j++) {
-                System.out.println(constrParams[j]);
-                System.out.println(constrValues[j]);
-            }
 
             try {
                 loadedUser = UserDataSet.class.getConstructor(constrParams).newInstance(constrValues);
-                //System.out.println(u);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

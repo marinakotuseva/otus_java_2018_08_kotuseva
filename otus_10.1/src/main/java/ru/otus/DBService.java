@@ -1,8 +1,5 @@
 package ru.otus;
 
-import ru.otus.ClassFields;
-import ru.otus.Executor;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,7 +26,7 @@ public class DBService {
         q.append("create table if not exists " + tName);
         q.append(" (");
 
-        LinkedHashMap<String, Object> fields = ClassFields.getClassFields(clazz);
+        LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
         for (Map.Entry entry: fields.entrySet()
              ) {
             Object fName = entry.getKey();
