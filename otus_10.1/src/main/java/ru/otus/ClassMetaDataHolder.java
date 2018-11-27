@@ -1,14 +1,16 @@
 package ru.otus;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ClassMetaDataHolder {
     static Map<Class, LinkedHashMap<String, Class>> cachedClassFields;
-    static String cachedInsertIntoQuery;
-    static String cachedSelectByIdQuery;
+    static Map<Class, String> cachedInsertIntoQuery;
+    static Map<Class, String> cachedSelectByIdQuery;
+    static Map<Class, String> tableName;
 
 
     public static LinkedHashMap<String, Class> getClassFields(Class clazz){
@@ -54,10 +56,11 @@ public class ClassMetaDataHolder {
             insertIntoTableValues.append(")");
 
             insertIntoTableQuery.append(insertIntoTableValues.toString());
-            cachedInsertIntoQuery = insertIntoTableQuery.toString();
+            cachedInsertIntoQuery = new LinkedHashMap<Class, String>();
+            cachedInsertIntoQuery.put(clazz, insertIntoTableQuery.toString());
         }
 
-        return cachedInsertIntoQuery;
+        return cachedInsertIntoQuery.get(clazz);
     }
 
     public static String getSelectByIdQuery(Class clazz){
@@ -75,13 +78,34 @@ public class ClassMetaDataHolder {
             selectByID.deleteCharAt(selectByID.lastIndexOf(","));
             selectByID.append(" from " + tName);
             selectByID.append(" where id = ?");
-            cachedSelectByIdQuery = selectByID.toString();
+            cachedSelectByIdQuery = new LinkedHashMap<Class, String>();
+            cachedSelectByIdQuery.put(clazz, selectByID.toString());
         }
-        return cachedSelectByIdQuery;
+        return cachedSelectByIdQuery.get(clazz);
     }
 
     public static String getTableNameForClass(Class clazz){
         return clazz.getName().replace(clazz.getPackageName()+".", "");
+    }
+
+    public static List<Class> getConstructorParams(Class clazz){
+
+        List<Class> constrParamsList = new ArrayList<Class>();
+        LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
+        for (Map.Entry entry: fields.entrySet()
+        ) {
+            Object fName = entry.getKey();
+            Field f = null;
+            try {
+                f = clazz.getDeclaredField((String)fName);
+            } catch (NoSuchFieldException e) {
+                System.out.println("No field " + fName);
+                e.printStackTrace();
+            }
+            Class fClass = f.getType();
+            constrParamsList.add(fClass);
+        }
+        return constrParamsList;
     }
 
 }

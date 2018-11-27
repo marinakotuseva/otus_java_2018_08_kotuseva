@@ -56,39 +56,14 @@ public class Executor {
     }
     public  <T extends DataSet> UserDataSet load(long id, Class<T> clazz){
 
-
         UserDataSet loadedUser = null;
-        List<Class> constrParamsList = new ArrayList<Class>();
+        List<Class> constrParamsList = ClassMetaDataHolder.getConstructorParams(clazz);
+        String SelectByIdQuery = ClassMetaDataHolder.getSelectByIdQuery(clazz);
 
-        String tName = ClassMetaDataHolder.getTableNameForClass(clazz);
+
         Connection conn = DBService.getConnection();
-        StringBuilder selectByID = new StringBuilder();
-        selectByID.append("select ");
-
-        LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
-        for (Map.Entry entry: fields.entrySet()
-        ) {
-            Object fName = entry.getKey();
-            selectByID.append(fName + ",");
-
-            Field f = null;
-            try {
-                f = clazz.getDeclaredField((String)fName);
-            } catch (NoSuchFieldException e) {
-                System.out.println("No field " + fName);
-                e.printStackTrace();
-            }
-            Class fClass = f.getType();
-            constrParamsList.add(fClass);
-        }
-
-        selectByID.deleteCharAt(selectByID.lastIndexOf(","));
-
-        selectByID.append(" from " + tName);
-        selectByID.append(" where id = ?");
-
         try {
-            PreparedStatement s = conn.prepareStatement(selectByID.toString());
+            PreparedStatement s = conn.prepareStatement(SelectByIdQuery);
             s.setLong(1, id);
             s.execute();
             ResultSet result = s.getResultSet();
@@ -98,7 +73,7 @@ public class Executor {
             constrParams = constrParamsList.toArray(constrParams);
 
             List<Object> constrParamsValues = new ArrayList<Object>();
-            int i = 1;
+            LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
             for (Map.Entry entry: fields.entrySet()){
                 Object sqlValue;
                 String fName = (String)entry.getKey();
@@ -137,6 +112,7 @@ public class Executor {
                 e1.printStackTrace();
             }
         }
+
         return loadedUser;
     }
 
