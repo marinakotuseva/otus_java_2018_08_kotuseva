@@ -14,40 +14,15 @@ import java.util.Map;
 public class Executor {
 
     public  <T extends DataSet> void save(T object) {
+
         Class clazz = object.getClass();
-        String tName = getTableNameForClass(clazz);
-
-        StringBuilder insertIntoTableQuery = new StringBuilder();
-        StringBuilder insertIntoTableValues = new StringBuilder();
-
-        insertIntoTableQuery.append("insert into " + tName);
-        insertIntoTableQuery.append("(");
-        insertIntoTableValues.append(" values(");
-
+        String insertIntoTableQuery = ClassMetaDataHolder.getInsertIntoTableQuery(clazz);
         LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
-        for (Map.Entry entry: fields.entrySet()
-        ) {
-            Object fName = entry.getKey();
-            insertIntoTableQuery.append(fName + ",");
-            insertIntoTableValues.append("?,");
-        }
-
-
-        insertIntoTableQuery.deleteCharAt(insertIntoTableQuery.lastIndexOf(","));
-        insertIntoTableQuery.append(")");
-
-        insertIntoTableValues.deleteCharAt(insertIntoTableValues.lastIndexOf(","));
-        insertIntoTableValues.append(")");
-
-        insertIntoTableQuery.append(insertIntoTableValues.toString());
 
         Connection conn = DBService.getConnection();
-
         try {
-            String q = insertIntoTableQuery.toString();
-            PreparedStatement s = conn.prepareStatement(q);
+            PreparedStatement s = conn.prepareStatement(insertIntoTableQuery);
             var i =1;
-
             for (Map.Entry entry: fields.entrySet()
             ) {
                 Object fName = entry.getKey();
@@ -81,13 +56,12 @@ public class Executor {
     }
     public  <T extends DataSet> UserDataSet load(long id, Class<T> clazz){
 
+
+        UserDataSet loadedUser = null;
         List<Class> constrParamsList = new ArrayList<Class>();
 
-        String tName = getTableNameForClass(clazz);
-
+        String tName = ClassMetaDataHolder.getTableNameForClass(clazz);
         Connection conn = DBService.getConnection();
-        UserDataSet loadedUser = null;
-
         StringBuilder selectByID = new StringBuilder();
         selectByID.append("select ");
 
@@ -101,6 +75,7 @@ public class Executor {
             try {
                 f = clazz.getDeclaredField((String)fName);
             } catch (NoSuchFieldException e) {
+                System.out.println("No field " + fName);
                 e.printStackTrace();
             }
             Class fClass = f.getType();
@@ -163,9 +138,6 @@ public class Executor {
             }
         }
         return loadedUser;
-    }
-    public static String getTableNameForClass(Class clazz){
-        return clazz.getName().replace(clazz.getPackageName()+".", "");
     }
 
 }

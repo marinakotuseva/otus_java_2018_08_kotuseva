@@ -22,7 +22,7 @@ public class DBService {
 
     public static void createTableForClass(Class clazz) {
         StringBuilder q = new StringBuilder();
-        String tName = Executor.getTableNameForClass(clazz);
+        String tName = ClassMetaDataHolder.getTableNameForClass(clazz);
         q.append("create table if not exists " + tName);
         q.append(" (");
 
@@ -64,7 +64,7 @@ public class DBService {
         }
     }
     public static void clearTable(Class clazz){
-        String tName = Executor.getTableNameForClass(clazz);
+        String tName = ClassMetaDataHolder.getTableNameForClass(clazz);
         Connection conn = getConnection();
         Statement stmt;
         try {
