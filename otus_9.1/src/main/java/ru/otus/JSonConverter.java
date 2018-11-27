@@ -3,22 +3,21 @@ package ru.otus;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class JSonConverter {
-    public static String toJson(Object object) {
+    private static String toJson(Object object) {
         if (object == null){
             return "null";
         } else {
             Class objectClass = object.getClass();
-            String res = "";
+            StringBuilder res = new StringBuilder();
             if (objectClass.isPrimitive()) {
                 if (object instanceof Integer || object instanceof Boolean) {
-                    res = object.toString();
+                    res.append(object.toString());
                 } else {
-                    res = "\"" + object.toString() + "\"";
+                    res.append("\"" + object.toString() + "\"");
                 }
             } else if (objectClass.isArray()) {
                 int length = Array.getLength(object);
@@ -30,8 +29,8 @@ public class JSonConverter {
                 }
                 s = s.substring(0, s.length() - 1);
                 s+="]";
-                res = s;
-            } else if (Collection.class.isInstance(object)) {
+                res.append(s);
+            } else if (Collection.class.isAssignableFrom(objectClass)) {
                 Collection objectToCollection = (Collection) object;
                 String s ="[";
                 for (Object o :
@@ -41,33 +40,28 @@ public class JSonConverter {
                 }
                 s = s.substring(0, s.length() - 1);
                 s+="]";
-                res = s;
-            //} else if (objectClass.isAssignableFrom(HashMap.class)) {
+                res.append(s);
             } else if (Map.class.isAssignableFrom(objectClass)) {
                 Map<Object, Object> objectToMap = (Map) object;
-                res = "{";
+                res.append("{");
                 for (var entry :
                         objectToMap.entrySet()) {
-                    res += "\"" + entry.getKey() + "\"";
-                    res += ":";
-                    res += toJson(entry.getValue());
-                    res += ",";
+                    res.append("\"" + entry.getKey() + "\"");
+                    res.append(":");
+                    res.append(toJson(entry.getValue()));
+                    res.append(",");
                 }
-                res = res.substring(0, res.length() - 1);
-                res += "}";
+                res.deleteCharAt(res.lastIndexOf(","));
+                res.append("}");
 
             } else {
-                if (object == null) {
-                    res = "\"" + null + "\"";
+                if (object instanceof Integer || object instanceof Boolean || object instanceof List) {
+                    res.append(object.toString());
                 } else {
-                    if (object instanceof Integer || object instanceof Boolean || object instanceof List) {
-                        res = object.toString();
-                    } else {
-                        res = "\"" + object.toString() + "\"";
-                    }
+                    res.append("\"" + object.toString() + "\"");
                 }
             }
-            return res;
+            return res.toString();
         }
     }
 
@@ -89,8 +83,7 @@ public class JSonConverter {
                     String fName = f.getName();
 
                     try {
-                        if (f.isAccessible() == false)
-                        {f.setAccessible(true);}
+                        f.setAccessible(true);
                         Object fValue = f.get(object);
                         res.append("\"" + fName + "\"");
                         res.append(":");
