@@ -9,7 +9,7 @@ public class ClassFields {
         int i = 0;
         for (Field f : clazz.getDeclaredFields()) {
             String fName = f.getName();
-            String fType = f.getType().getTypeName();
+            Class<?> fType = f.getType();
             fields.put(fName, fType);
         }
         return fields;

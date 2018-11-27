@@ -1,6 +1,8 @@
 package ru.otus;
 
-import java.lang.reflect.Constructor;
+import ru.otus.DataSet.DataSet;
+import ru.otus.DataSet.UserDataSet;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
@@ -40,7 +42,7 @@ public class Executor {
 
         insertIntoTableQuery.append(insertIntoTableValues.toString());
 
-        Connection conn = Connector.getConnection();
+        Connection conn = DBService.getConnection();
 
         try {
             String q = insertIntoTableQuery.toString();
@@ -54,11 +56,11 @@ public class Executor {
                 Field f = clazz.getDeclaredField((String)fName);
                 f.setAccessible(true);
                 Object fValue = f.get(object);
-                if (fType == "long") {
+                if (fType == long.class) {
                     s.setLong(i, (Long) fValue);
-                } else if (fType == "java.lang.String") {
+                } else if (fType == String.class) {
                     s.setString(i, (String) fValue);
-                } else if (fType == "int") {
+                } else if (fType == int.class) {
                     s.setInt(i, (Integer) fValue);
                 }
                 i++;
@@ -88,7 +90,7 @@ public class Executor {
 
         String tName = getTableNameForClass(clazz);
 
-        Connection conn = Connector.getConnection();
+        Connection conn = DBService.getConnection();
         UserDataSet loadedUser = null;
 
         StringBuilder selectByID = new StringBuilder();
@@ -135,9 +137,9 @@ public class Executor {
                 Object fType = entry.getValue();
                 System.out.println("132 " + fType);
                 System.out.println("132 " + fType);
-                if (fType == "long") {
+                if (fType == Long.class) {
                     sqlValue = result.getLong(fName);
-                } else if (fType == "java.lang.String") {
+                } else if (fType == String.class) {
                     sqlValue = result.getString(fName);
                 } else {
                     sqlValue = result.getInt(fName);
@@ -153,8 +155,6 @@ public class Executor {
                 System.out.println(constrValues[j]);
             }
 
-            //Class[] constrParams = { constrParamsList};
-            //Object[] constrValues2 = {1, "Mike", 15};
             try {
                 loadedUser = UserDataSet.class.getConstructor(constrParams).newInstance(constrValues);
                 //System.out.println(u);
@@ -168,7 +168,6 @@ public class Executor {
                 e.printStackTrace();
             }
 
-            //loadedUser = new UserDataSet(id, result.getString(2), result.getInt(3));
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();

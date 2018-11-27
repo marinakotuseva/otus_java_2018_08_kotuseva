@@ -1,7 +1,5 @@
-package ru.otus;
+package ru.otus.DataSet;
 
-
-import java.sql.*;
 
 public class UserDataSet extends DataSet {
 

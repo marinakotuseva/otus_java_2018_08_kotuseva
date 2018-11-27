@@ -1,13 +1,27 @@
 package ru.otus;
 
-import java.lang.reflect.Field;
+import ru.otus.ClassFields;
+import ru.otus.Executor;
+
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DBService {
+
+
+    public static Connection getConnection(){
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection ("jdbc:h2:~/test", "sa","1Qwerty");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return conn;
+    }
 
     public static void createTableForClass(Class clazz) {
         StringBuilder q = new StringBuilder();
@@ -23,9 +37,9 @@ public class DBService {
             q.append(fName);
             if (fName == "id") {
                 q.append(" bigint(20) not null auto_increment");
-            } else if (fType == "java.lang.String") {
+            } else if (fType == String.class) {
                 q.append(" varchar(255)");
-            } else if (fType == "int") {
+            } else if (fType == int.class) {
                 q.append(" int(3)");
             }
             q.append(",");
@@ -34,7 +48,7 @@ public class DBService {
         q.append(")");
 
 
-        Connection conn = Connector.getConnection();
+        Connection conn = getConnection();
         Statement stmt;
         try {
             stmt = conn.createStatement();
@@ -54,7 +68,7 @@ public class DBService {
     }
     public static void clearTable(Class clazz){
         String tName = Executor.getTableNameForClass(clazz);
-        Connection conn = Connector.getConnection();
+        Connection conn = getConnection();
         Statement stmt;
         try {
             stmt = conn.createStatement();

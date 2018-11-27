@@ -1,13 +1,13 @@
 package ru.otus;
 
 
-import java.lang.reflect.Constructor;
+import ru.otus.DataSet.UserDataSet;
+
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Class.forName ("org.h2.Driver");
+        //Class.forName ("org.h2.Driver");
         Executor ex = new Executor();
 
         DBService.createTableForClass(UserDataSet.class);
