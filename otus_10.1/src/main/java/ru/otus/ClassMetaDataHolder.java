@@ -10,7 +10,7 @@ public class ClassMetaDataHolder {
     static Map<Class, LinkedHashMap<String, Class>> cachedClassFields;
     static Map<Class, String> cachedInsertIntoQuery;
     static Map<Class, String> cachedSelectByIdQuery;
-    static Map<Class, String> tableName;
+    static Map<Class, String> cachedTableName;
 
 
     public static LinkedHashMap<String, Class> getClassFields(Class clazz){
@@ -85,7 +85,11 @@ public class ClassMetaDataHolder {
     }
 
     public static String getTableNameForClass(Class clazz){
-        return clazz.getName().replace(clazz.getPackageName()+".", "");
+        if (cachedTableName == null){
+            cachedTableName = new LinkedHashMap<Class, String>();
+            cachedTableName.put(clazz, clazz.getName().replace(clazz.getPackageName()+".", ""));
+        }
+        return cachedTableName.get(clazz);
     }
 
     public static List<Class> getConstructorParams(Class clazz){
