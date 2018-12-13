@@ -6,7 +6,7 @@ import ru.otus.DataSet.UserDataSet;
 import java.lang.reflect.InvocationTargetException;
 
 public class Main {
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static void main(String[] args) {
 
         Executor ex = new Executor();
 

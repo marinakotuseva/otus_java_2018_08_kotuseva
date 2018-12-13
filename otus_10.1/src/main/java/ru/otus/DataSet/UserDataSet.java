@@ -9,9 +9,6 @@ public class UserDataSet extends DataSet {
     private String name;
     private int age;
 
-    public long getId() {
-        return id;
-    }
     public String getName() {
         return name;
     }
