@@ -17,7 +17,7 @@ public class Executor {
 
         Class clazz = object.getClass();
         String insertIntoTableQuery = ClassMetaDataHolder.getInsertIntoTableQuery(clazz);
-        LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
+        LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
 
         Connection conn = DBService.getConnection();
         try {
@@ -25,9 +25,8 @@ public class Executor {
             var i =1;
             for (Map.Entry entry: fields.entrySet()
             ) {
-                Object fName = entry.getKey();
-                Object fType = entry.getValue();
-                Field f = clazz.getDeclaredField((String)fName);
+                Field f = (Field)entry.getValue();
+                Object fType = f.getType();
                 f.setAccessible(true);
                 Object fValue = f.get(object);
                 if (fType == long.class) {
@@ -50,8 +49,6 @@ public class Executor {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-        } catch (NoSuchFieldException e) {
-            System.out.println("Field is not found");
         }
     }
     public  <T extends DataSet> UserDataSet load(long id, Class<T> clazz){
@@ -73,11 +70,12 @@ public class Executor {
             constrParams = constrParamsList.toArray(constrParams);
 
             List<Object> constrParamsValues = new ArrayList<Object>();
-            LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
+            LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
             for (Map.Entry entry: fields.entrySet()){
                 Object sqlValue;
                 String fName = (String)entry.getKey();
-                Object fType = entry.getValue();
+                Field f = (Field)entry.getValue();
+                Object fType = f.getType();
                 if (fType == Long.class) {
                     sqlValue = result.getLong(fName);
                 } else if (fType == String.class) {

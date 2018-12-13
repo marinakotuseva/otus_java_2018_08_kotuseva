@@ -7,47 +7,55 @@ import java.util.List;
 import java.util.Map;
 
 public class ClassMetaDataHolder {
-    static Map<Class, LinkedHashMap<String, Class>> cachedClassFields;
+    static Map<Class, LinkedHashMap<String, Field>> cachedClassFields;
     static Map<Class, String> cachedInsertIntoQuery;
     static Map<Class, String> cachedSelectByIdQuery;
     static Map<Class, String> cachedTableName;
 
 
-    public static LinkedHashMap<String, Class> getClassFields(Class clazz){
-        LinkedHashMap<String, Class>  fields = new LinkedHashMap();
+    public static LinkedHashMap<String, Field> getClassFields(Class clazz){
+
+        boolean addClassFields = false;
         if(cachedClassFields == null){
+            cachedClassFields = new LinkedHashMap<>();
+            addClassFields = true;
+        } else {
+            addClassFields = !cachedClassFields.containsKey(clazz);
+        }
+        if (addClassFields) {
+            LinkedHashMap<String, Field>  fields = new LinkedHashMap();
             for (Field f : clazz.getDeclaredFields()) {
                 String fName = f.getName();
-                Class<?> fType = f.getType();
-                fields.put(fName, fType);
+                fields.put(fName, f);
             }
-            cachedClassFields = new LinkedHashMap<Class, LinkedHashMap<String, Class>>();
             cachedClassFields.put(clazz, fields);
-        } else {
-            fields = cachedClassFields.get(clazz);
         }
-        return fields;
+        return cachedClassFields.get(clazz);
     }
 
     public static String getInsertIntoTableQuery(Class clazz){
+        boolean addQuery= false;
         if(cachedInsertIntoQuery == null) {
-            String tName = getTableNameForClass(clazz);
-
+            cachedInsertIntoQuery = new LinkedHashMap<>();
+            addQuery = true;
+        } else {
+            addQuery = !cachedInsertIntoQuery.containsKey(clazz);
+        }
+        if (addQuery) {
             StringBuilder insertIntoTableQuery = new StringBuilder();
             StringBuilder insertIntoTableValues = new StringBuilder();
 
+            String tName = getTableNameForClass(clazz);
             insertIntoTableQuery.append("insert into " + tName);
             insertIntoTableQuery.append("(");
             insertIntoTableValues.append(" values(");
 
-            LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
-            for (Map.Entry entry: fields.entrySet()
-            ) {
+            LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
+            for (Map.Entry entry: fields.entrySet()) {
                 Object fName = entry.getKey();
                 insertIntoTableQuery.append(fName + ",");
                 insertIntoTableValues.append("?,");
             }
-
 
             insertIntoTableQuery.deleteCharAt(insertIntoTableQuery.lastIndexOf(","));
             insertIntoTableQuery.append(")");
@@ -56,7 +64,6 @@ public class ClassMetaDataHolder {
             insertIntoTableValues.append(")");
 
             insertIntoTableQuery.append(insertIntoTableValues.toString());
-            cachedInsertIntoQuery = new LinkedHashMap<Class, String>();
             cachedInsertIntoQuery.put(clazz, insertIntoTableQuery.toString());
         }
 
@@ -64,12 +71,21 @@ public class ClassMetaDataHolder {
     }
 
     public static String getSelectByIdQuery(Class clazz){
+        boolean addQuery= false;
+
         if (cachedSelectByIdQuery == null) {
+            cachedSelectByIdQuery = new LinkedHashMap<>();
+            addQuery = true;
+        } else {
+            addQuery = !cachedSelectByIdQuery.containsKey(clazz);
+        }
+
+        if (addQuery) {
             String tName = getTableNameForClass(clazz);
             StringBuilder selectByID = new StringBuilder();
             selectByID.append("select ");
 
-            LinkedHashMap<String, Class> fields = getClassFields(clazz);
+            LinkedHashMap<String, Field> fields = getClassFields(clazz);
             for (Map.Entry entry : fields.entrySet()
             ) {
                 Object fName = entry.getKey();
@@ -78,7 +94,7 @@ public class ClassMetaDataHolder {
             selectByID.deleteCharAt(selectByID.lastIndexOf(","));
             selectByID.append(" from " + tName);
             selectByID.append(" where id = ?");
-            cachedSelectByIdQuery = new LinkedHashMap<Class, String>();
+
             cachedSelectByIdQuery.put(clazz, selectByID.toString());
         }
         return cachedSelectByIdQuery.get(clazz);
@@ -95,7 +111,7 @@ public class ClassMetaDataHolder {
     public static List<Class> getConstructorParams(Class clazz){
 
         List<Class> constrParamsList = new ArrayList<Class>();
-        LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
+        LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
         for (Map.Entry entry: fields.entrySet()
         ) {
             Object fName = entry.getKey();

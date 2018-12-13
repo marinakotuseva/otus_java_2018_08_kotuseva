@@ -1,5 +1,6 @@
 package ru.otus;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,11 +27,12 @@ public class DBService {
         q.append("create table if not exists " + tName);
         q.append(" (");
 
-        LinkedHashMap<String, Class> fields = ClassMetaDataHolder.getClassFields(clazz);
+        LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
         for (Map.Entry entry: fields.entrySet()
              ) {
             Object fName = entry.getKey();
-            Object fType = entry.getValue();
+            Field f = (Field) entry.getValue();
+            Object fType = f.getType();
             q.append(fName);
             if (fName == "id") {
                 q.append(" bigint(20) not null auto_increment");
