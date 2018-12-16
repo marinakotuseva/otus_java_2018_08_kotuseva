@@ -6,7 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-// TODO: what is this???
 public class DataSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
