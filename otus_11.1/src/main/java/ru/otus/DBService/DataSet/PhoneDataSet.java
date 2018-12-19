@@ -6,7 +6,7 @@ import org.h2.store.Data;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "PhoneDataSetHibernate")
 public class PhoneDataSet extends DataSet {
     @Column
     private String number;

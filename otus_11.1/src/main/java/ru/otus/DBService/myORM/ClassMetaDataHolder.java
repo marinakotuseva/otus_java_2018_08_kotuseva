@@ -123,6 +123,7 @@ public class ClassMetaDataHolder {
                 e.printStackTrace();
             }
             Class fClass = f.getType();
+            if (fClass.equals(long.class) || fClass.equals(String.class) || fClass.equals(int.class))
             constrParamsList.add(fClass);
         }
         return constrParamsList;

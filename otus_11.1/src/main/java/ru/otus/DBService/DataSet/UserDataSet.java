@@ -46,7 +46,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "UserDataSet")
+@Table(name = "UserDataSetHibernate")
 public class UserDataSet extends DataSet {
     @Column(name = "id")
     private long id;
@@ -79,6 +79,12 @@ public class UserDataSet extends DataSet {
         this.name = name;
         this.age = age;
     }
+    public UserDataSet(long id, String name, int age, AddressDataSet address, List phones) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phones = phones;
+    }
 
     public void setAddress(AddressDataSet address){
         this.address = address;
@@ -103,7 +109,7 @@ public class UserDataSet extends DataSet {
         "name=" + name + ", " +
         "age=" + age + ", " +
         "address=" + address + ", "+
-        "phones="+ph + "\n";
+        "phones="+ph;
 
     }
 }

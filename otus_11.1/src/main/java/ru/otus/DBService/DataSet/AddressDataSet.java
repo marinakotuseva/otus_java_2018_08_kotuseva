@@ -8,7 +8,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "AddressDataSetHibernate")
 public class AddressDataSet extends DataSet {
     @Column
     private String street;

@@ -1,8 +1,10 @@
 package ru.otus.DBService.myORM;
 
+import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.DataSet;
 import ru.otus.DBService.DataSet.UserDataSet;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -22,7 +24,7 @@ public class Executor {
         String insertIntoTableQuery = ClassMetaDataHolder.getInsertIntoTableQuery(clazz);
         LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
 
-        Connection conn = DBService.getConnection();
+        Connection conn = MyOrmDBHelper.getConnection();
         try {
             PreparedStatement s = conn.prepareStatement(insertIntoTableQuery);
             var i =1;
@@ -38,6 +40,8 @@ public class Executor {
                     s.setString(i, (String) fValue);
                 } else if (fType == int.class) {
                     s.setInt(i, (Integer) fValue);
+                } else {
+                    s.setString(i, null);
                 }
                 i++;
             }
@@ -61,7 +65,7 @@ public class Executor {
         String SelectByIdQuery = ClassMetaDataHolder.getSelectByIdQuery(clazz);
 
 
-        Connection conn = DBService.getConnection();
+        Connection conn = MyOrmDBHelper.getConnection();
         try {
             PreparedStatement s = conn.prepareStatement(SelectByIdQuery);
             s.setLong(1, id);
@@ -79,21 +83,24 @@ public class Executor {
                 String fName = (String)entry.getKey();
                 Field f = (Field)entry.getValue();
                 Object fType = f.getType();
-                if (fType == Long.class) {
+                if (fType == long.class) {
                     sqlValue = result.getLong(fName);
+                    constrParamsValues.add(sqlValue);
                 } else if (fType == String.class) {
                     sqlValue = result.getString(fName);
-                } else {
+                    constrParamsValues.add(sqlValue);
+                } else if (fType == int.class){
                     sqlValue = result.getInt(fName);
+                    constrParamsValues.add(sqlValue);
                 }
-                constrParamsValues.add(sqlValue);
             }
 
             Object[] constrValues = new Object[constrParamsValues.size() ];
             constrParamsValues.toArray(constrValues);
 
             try {
-                loadedUser = UserDataSet.class.getConstructor(constrParams).newInstance(constrValues);
+                Constructor<UserDataSet> c = UserDataSet.class.getConstructor(constrParams);
+                loadedUser = c.newInstance(constrValues);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

@@ -1,7 +1,5 @@
 package ru.otus.DBService.myORM;
 
-import ru.otus.DBService.myORM.ClassMetaDataHolder;
-
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +8,7 @@ import java.sql.Statement;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public interface DBService {
+public class MyOrmDBHelper {
 
 
     static Connection getConnection(){
@@ -23,7 +21,7 @@ public interface DBService {
         return conn;
     }
 
-    static void createTableForClass(Class clazz) {
+    public void createTableForClass(Class clazz) {
         StringBuilder q = new StringBuilder();
         String tName = ClassMetaDataHolder.getTableNameForClass(clazz);
         q.append("create table if not exists " + tName);
@@ -42,6 +40,8 @@ public interface DBService {
                 q.append(" varchar(255)");
             } else if (fType == int.class) {
                 q.append(" int(3)");
+            } else {
+                q.append(" varchar(255)");
             }
             q.append(",");
         }
@@ -67,7 +67,7 @@ public interface DBService {
             e.printStackTrace();
         }
     }
-    static void clearTable(Class clazz){
+    public void clearTable(Class clazz){
         String tName = ClassMetaDataHolder.getTableNameForClass(clazz);
         Connection conn = getConnection();
         Statement stmt;
