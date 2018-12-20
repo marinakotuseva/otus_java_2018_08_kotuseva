@@ -32,18 +32,19 @@ public class MyOrmDBHelper {
              ) {
             Object fName = entry.getKey();
             Field f = (Field) entry.getValue();
-            Object fType = f.getType();
-            q.append(fName);
             if (fName == "id") {
+                q.append(fName);
                 q.append(" bigint(20) not null auto_increment");
-            } else if (fType == String.class) {
+                q.append(",");
+            } else if (fName == "name") {
+                q.append(fName);
                 q.append(" varchar(255)");
-            } else if (fType == int.class) {
+                q.append(",");
+            } else if (fName == "age") {
+                q.append(fName);
                 q.append(" int(3)");
-            } else {
-                q.append(" varchar(255)");
+                q.append(",");
             }
-            q.append(",");
         }
         q.deleteCharAt(q.lastIndexOf(","));
         q.append(")");

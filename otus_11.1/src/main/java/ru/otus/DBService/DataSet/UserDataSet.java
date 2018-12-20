@@ -43,10 +43,11 @@ package ru.otus.DBService.DataSet;
 import org.h2.engine.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "UserDataSetHibernate")
+@Table(name = "UserDataSet")
 public class UserDataSet extends DataSet {
     @Column(name = "id")
     private long id;
@@ -54,9 +55,9 @@ public class UserDataSet extends DataSet {
     private String name;
     @Column(name = "age")
     private int age;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "user")
     private AddressDataSet address;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<PhoneDataSet> phones;
 
     public String getName() {
@@ -78,6 +79,8 @@ public class UserDataSet extends DataSet {
         this.id = id;
         this.name = name;
         this.age = age;
+        this.address = null;
+        this.phones = new ArrayList<>();
     }
     public UserDataSet(long id, String name, int age, AddressDataSet address, List phones) {
         this.id = id;
@@ -86,12 +89,16 @@ public class UserDataSet extends DataSet {
         this.phones = phones;
     }
 
+    //public void setAddress(AddressDataSet address){
+    //    this.address = address;
+    //}
+
+    public void setPhone(PhoneDataSet phone) {
+        phones.add(phone);
+        phone.setUser(this);
+    }
     public void setAddress(AddressDataSet address){
         this.address = address;
-    }
-
-    public void setPhones(List<PhoneDataSet> phones){
-        this.phones = phones;
     }
 
 

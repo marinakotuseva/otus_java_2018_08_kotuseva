@@ -53,8 +53,10 @@ public class ClassMetaDataHolder {
             LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
             for (Map.Entry entry: fields.entrySet()) {
                 Object fName = entry.getKey();
-                insertIntoTableQuery.append(fName + ",");
-                insertIntoTableValues.append("?,");
+                if (fName == "id" || fName == "name" || fName == "age") {
+                    insertIntoTableQuery.append(fName + ",");
+                    insertIntoTableValues.append("?,");
+                }
             }
 
             insertIntoTableQuery.deleteCharAt(insertIntoTableQuery.lastIndexOf(","));
@@ -89,7 +91,10 @@ public class ClassMetaDataHolder {
             for (Map.Entry entry : fields.entrySet()
             ) {
                 Object fName = entry.getKey();
-                selectByID.append(fName + ",");
+                // Заглушка
+                if (fName == "id" || fName == "name" || fName == "age"){
+                    selectByID.append(fName + ",");
+                }
             }
             selectByID.deleteCharAt(selectByID.lastIndexOf(","));
             selectByID.append(" from " + tName);
@@ -101,8 +106,15 @@ public class ClassMetaDataHolder {
     }
 
     public static String getTableNameForClass(Class clazz){
-        if (cachedTableName == null){
+        boolean addName = false;
+
+        if (cachedTableName == null) {
             cachedTableName = new LinkedHashMap<Class, String>();
+            addName = true;
+        } else {
+            addName = !cachedTableName.containsKey(clazz);
+        }
+        if (addName) {
             cachedTableName.put(clazz, clazz.getName().replace(clazz.getPackageName()+".", ""));
         }
         return cachedTableName.get(clazz);

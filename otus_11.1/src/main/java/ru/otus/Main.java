@@ -17,22 +17,22 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-        // Create table fro myORM
-        MyOrmDBHelper MyOrmDBHelper = new MyOrmDBHelper();
-        MyOrmDBHelper.createTableForClass(UserDataSet.class);
-        MyOrmDBHelper.clearTable(UserDataSet.class);
 
 
         // UserList
         List<UserDataSet> userList = new ArrayList<>();
         UserDataSet user1 = new UserDataSet(1, "Jack", 10);
-
-
         userList.add(user1);
         userList.add(new UserDataSet(2, "Kyle", 13));
         userList.add(new UserDataSet(3, "Agatha", 17));
 
         // Via MyORM
+        // Create table for myORM
+        MyOrmDBHelper MyOrmDBHelper = new MyOrmDBHelper();
+        MyOrmDBHelper.createTableForClass(UserDataSet.class);
+        MyOrmDBHelper.clearTable(AddressDataSet.class);
+        MyOrmDBHelper.clearTable(PhoneDataSet.class);
+        MyOrmDBHelper.clearTable(UserDataSet.class);
         System.out.println("=== MyORM===");
         DBService myOrmDBService = new MyOrmDBServiceImpl();
         for (UserDataSet user : userList
@@ -44,17 +44,17 @@ public class Main {
         UserDataSet loadedUserMyORM = ((MyOrmDBServiceImpl) myOrmDBService).load(2);
         System.out.println("User loaded: " + loadedUserMyORM.toString());
 
+
         // Via hibernate/
-        user1.setAddress(new AddressDataSet("Baker street"));
+        AddressDataSet ad1 = new AddressDataSet("Baker street");
+        ad1.setUser(user1);
+        user1.setAddress(ad1);
         List<PhoneDataSet> phones = new ArrayList<>();
         PhoneDataSet ph1 = new PhoneDataSet("111");
         PhoneDataSet ph2 = new PhoneDataSet("222");
-        List ph = new ArrayList();
-        ph.add(ph1);
-        ph.add(ph2);
-        user1.setPhones(ph);
-        ph1.setUser(user1);
-        ph2.setUser(user1);
+        user1.setPhone(ph1);
+        user1.setPhone(ph2);
+
         System.out.println("=== Via hibernate ===");
         DBService hibernateDBService = new HibernateDBServiceImpl();
         for (UserDataSet user : userList
@@ -67,13 +67,6 @@ public class Main {
         //System.out.println("User loaded: " + loadedUserHibernate.toString());
 
         List<UserDataSet> list = hibernateDBService.loadAll();
-        System.out.println(list);
-        for (UserDataSet user : list
-        ) {
-            System.out.println("All users loaded: " + user.toString());
-        }
-        List<AddressDataSet> addresses = hibernateDBService.loadAll();
-        System.out.println(list);
         for (UserDataSet user : list
         ) {
             System.out.println("All users loaded: " + user.toString());

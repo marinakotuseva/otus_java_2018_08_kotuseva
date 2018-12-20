@@ -31,17 +31,15 @@ public class Executor {
             for (Map.Entry entry: fields.entrySet()
             ) {
                 Field f = (Field)entry.getValue();
-                Object fType = f.getType();
                 f.setAccessible(true);
                 Object fValue = f.get(object);
-                if (fType == long.class) {
+                String fName = f.getName();
+                if (fName == "id") {
                     s.setLong(i, (Long) fValue);
-                } else if (fType == String.class) {
+                } else if (fName == "name") {
                     s.setString(i, (String) fValue);
-                } else if (fType == int.class) {
+                } else if (fName == "age") {
                     s.setInt(i, (Integer) fValue);
-                } else {
-                    s.setString(i, null);
                 }
                 i++;
             }

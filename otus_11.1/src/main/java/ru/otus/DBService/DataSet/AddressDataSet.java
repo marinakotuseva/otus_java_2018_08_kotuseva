@@ -8,7 +8,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "AddressDataSetHibernate")
+@Table(name = "AddressDataSet")
 public class AddressDataSet extends DataSet {
     @Column
     private String street;
@@ -19,6 +19,9 @@ public class AddressDataSet extends DataSet {
 
     public AddressDataSet(String street){
         this.street = street;
+    }
+    public void setUser(UserDataSet user) {
+        this.user = user;
     }
 
     @Override
