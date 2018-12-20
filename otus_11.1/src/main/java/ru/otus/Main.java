@@ -63,8 +63,8 @@ public class Main {
             System.out.println("User saved: " + user.toString());
         }
 
-        //UserDataSet loadedUserHibernate = hibernateDBService.load(1);
-        //System.out.println("User loaded: " + loadedUserHibernate.toString());
+        UserDataSet loadedUserHibernate = ((HibernateDBServiceImpl) hibernateDBService).load(1);
+        System.out.println("User loaded by id: " + loadedUserHibernate.toString());
 
         List<UserDataSet> list = hibernateDBService.loadAll();
         for (UserDataSet user : list
