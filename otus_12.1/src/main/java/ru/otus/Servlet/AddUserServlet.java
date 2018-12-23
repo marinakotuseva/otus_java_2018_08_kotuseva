@@ -1,5 +1,9 @@
 package ru.otus.Servlet;
 
+import ru.otus.DBService.DBService;
+import ru.otus.DBService.DataSet.UserDataSet;
+import ru.otus.DBService.hibernate.HibernateDBServiceImpl;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -13,23 +17,11 @@ public class AddUserServlet extends HttpServlet {
     private static final String ADDUSER_PAGE_TEMPLATE = "adduser.html";
     private static final String NAME_VARIABLE_NAME = "name";
 
-    private final TemplateProcessor templateProcessor;
-    private String name;
-    private int age;
+    private final TemplateProcessor templateProcessor = new TemplateProcessor();
+    private final HibernateDBServiceImpl hibernateDBService;
 
-    public AddUserServlet(TemplateProcessor templateProcessor, String name) {
-        this.name = name;
-        this.templateProcessor = templateProcessor;
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public AddUserServlet(TemplateProcessor templateProcessor) {
-        this.templateProcessor = templateProcessor;
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public AddUserServlet() throws IOException {
-        this(new TemplateProcessor());
+    public AddUserServlet(HibernateDBServiceImpl dbService) throws IOException {
+        this.hibernateDBService = dbService;
     }
 
     public void doGet(HttpServletRequest request,
@@ -40,13 +32,19 @@ public class AddUserServlet extends HttpServlet {
                        HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String age = request.getParameter("age");
+        System.out.println(name);
+        System.out.println(age);
 
-        if (name != null) {
-            saveToVariable(name);
-            saveToSession(request, name); //request.getSession().getAttribute("login");
-            saveToServlet(request, name); //request.getAttribute("login");
-            saveToCookie(response, name); //request.getCookies();
-        }
+        //DBService hibernateDBService = new HibernateDBServiceImpl();
+        System.out.println("===SAVING===");
+        hibernateDBService.save(new UserDataSet(name, Integer.parseInt(age)));;
+
+//        if (name != null) {
+//            saveToVariable(name);
+//            saveToSession(request, name); //request.getSession().getAttribute("login");
+//            saveToServlet(request, name); //request.getAttribute("login");
+//            saveToCookie(response, name); //request.getCookies();
+//        }
 
         setOK(response);
         String l = (String) request.getSession().getAttribute("login");
@@ -61,9 +59,9 @@ public class AddUserServlet extends HttpServlet {
         request.getSession().setAttribute("login", requestLogin);
     }
 
-    private void saveToVariable(String requestName) {
-        name = requestName != null ? requestName : name;
-    }
+//    private void saveToVariable(String requestName) {
+//        name = requestName != null ? requestName : name;
+//    }
 
     private void setOK(HttpServletResponse response) {
         response.setContentType("text/html;charset=utf-8");

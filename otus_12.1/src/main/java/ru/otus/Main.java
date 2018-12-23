@@ -68,7 +68,7 @@ public class Main {
         user1.setPhone(ph2);
 
         System.out.println("=== Via hibernate ===");
-        DBService hibernateDBService = new HibernateDBServiceImpl();
+        HibernateDBServiceImpl hibernateDBService = new HibernateDBServiceImpl();
         System.out.println("===SAVING===");
         for (UserDataSet user : userList
         ) {
@@ -76,7 +76,7 @@ public class Main {
             System.out.println("User saved: " + user.toString());
         }
 
-        UserDataSet loadedUserHibernate = ((HibernateDBServiceImpl) hibernateDBService).load(1);
+        UserDataSet loadedUserHibernate = hibernateDBService.load(1);
         System.out.println("User loaded by id: " + loadedUserHibernate.toString());
 
         List<UserDataSet> list = hibernateDBService.loadAll();
@@ -88,9 +88,16 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         //TemplateProcessor templateProcessor = new TemplateProcessor();
         //context.addServlet(new ServletHolder(new LoginServlet(templateProcessor, "anonymous")), "/login");
-        context.addServlet(AdminServlet.class, "/admin");
-        context.addServlet(AddUserServlet.class, "/adduser");
-        context.addServlet(InfoServlet.class, "/info");
+
+
+
+        //AdminServlet adminServlet = new AdminServlet();
+        TemplateProcessor tp = new TemplateProcessor();
+        AddUserServlet AddUserServlet = new AddUserServlet(hibernateDBService);
+        //InfoServlet InfoServlet = new InfoServlet(hibernateDBService);
+        //context.addServlet(adminServlet.getClass(), "/admin");
+        context.addServlet(AddUserServlet.getClass(), "/adduser");
+        //context.addServlet(InfoServlet.getClass(), "/info");
 
         Server server = new Server(PORT);
         server.setHandler(new HandlerList(resourceHandler, context));

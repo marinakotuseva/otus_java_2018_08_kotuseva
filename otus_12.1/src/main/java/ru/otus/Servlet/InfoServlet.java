@@ -1,5 +1,6 @@
 package ru.otus.Servlet;
 
+import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.UserDataSet;
 import ru.otus.DBService.hibernate.HibernateDBServiceImpl;
 
@@ -17,30 +18,21 @@ public class InfoServlet extends HttpServlet {
     private static final String INFO_PAGE_TEMPLATE = "info.html";
 
     private final TemplateProcessor templateProcessor;
+    private final DBService dbService;
+
 
     @SuppressWarnings("WeakerAccess")
-    public InfoServlet(TemplateProcessor templateProcessor) {
-        this.templateProcessor = templateProcessor;
+    public InfoServlet(DBService dbService) throws IOException {
+        this.templateProcessor = new TemplateProcessor();
+        this.dbService = dbService;
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public InfoServlet() throws IOException {
-        this(new TemplateProcessor());
-    }
-
-    private static Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
+    private Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
         Map<String, Object> pageVariables = new HashMap<>();
 
-        HibernateDBServiceImpl DBService = new HibernateDBServiceImpl();
-        List<UserDataSet> users = DBService.loadAll();
+        List<UserDataSet> users = dbService.loadAll();
         System.out.println(users);
-        String s = "";
-        for (UserDataSet u: users
-        ) {
-            s+= u.toString() + "\n";
-        }
-
-        pageVariables.put("userInfo", s);
+        pageVariables.put("userInfo", users.size());
         return pageVariables;
     }
 
