@@ -85,13 +85,16 @@ public class Main {
             System.out.println("All users loaded: " + user.toString());
         }
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        //TemplateProcessor templateProcessor = new TemplateProcessor();
-        //context.addServlet(new ServletHolder(new LoginServlet(templateProcessor, "anonymous")), "/login");
-        context.addServlet(AdminServlet.class, "/admin");
         AddUserServlet addUserServlet = new AddUserServlet(hibernateDBService);
-        context.addServlet(addUserServlet.getClass(), "/adduser");
-        context.addServlet(InfoServlet.class, "/info");
+        InfoServlet infoServlet = new InfoServlet(hibernateDBService);
+        FindUserServlet findUserServlet = new FindUserServlet(hibernateDBService);
+
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+
+
+        context.addServlet(new ServletHolder(addUserServlet), "/adduser");
+        context.addServlet(new ServletHolder(findUserServlet), "/finduser");
+        context.addServlet(new ServletHolder(infoServlet), "/info");
 
         Server server = new Server(PORT);
         server.setHandler(new HandlerList(resourceHandler, context));

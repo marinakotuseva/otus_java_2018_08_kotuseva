@@ -1,6 +1,8 @@
 package ru.otus.Servlet;
 
 import ru.otus.DBService.DBService;
+import ru.otus.DBService.DataSet.UserDataSet;
+import ru.otus.DBService.hibernate.HibernateDBServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -13,52 +15,53 @@ import java.util.Map;
 
 public class AddUserServlet extends HttpServlet {
     private static final String ADDUSER_PAGE_TEMPLATE = "adduser.html";
+    private static final String PARAM_NAME = "name";
+    private static final String PARAM_AGE = "age";
+    private static final String PAGE_PARAM = "userInfo";
+    private static final String RESULT_SUCCESS = "User Saved";
 
     private final TemplateProcessor templateProcessor;
     private final DBService dbService;
 
-    @SuppressWarnings("WeakerAccess")
     public AddUserServlet(DBService dbService) throws IOException {
         this.templateProcessor = new TemplateProcessor();
         this.dbService = dbService;
     }
 
     public void doGet(HttpServletRequest request,
-                      HttpServletResponse response) throws ServletException, IOException {
+                      HttpServletResponse response) throws IOException {
         doPost(request, response);
     }
     public void doPost(HttpServletRequest request,
-                       HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String age = request.getParameter("age");
-        System.out.println(name);
-        System.out.println(age);
+                       HttpServletResponse response) throws IOException {
+        Map parMap = request.getParameterMap();
+        Map<String, Object> pageVariables = new HashMap<>();
+        String saveResult = "";
 
-        setOK(response);
-        String l = (String) request.getSession().getAttribute("login");
-        String page = getPage(l); //save to the page
+        if (parMap.containsKey(PARAM_NAME) && parMap.containsKey(PARAM_AGE)){
+            String name = request.getParameter(PARAM_NAME);
+            String age = request.getParameter(PARAM_AGE);
+            if (!name.isEmpty() && !age.isEmpty()) {
+                try {
+                    dbService.save(new UserDataSet(name,Integer.parseInt(age)));
+                    saveResult = RESULT_SUCCESS;
+                } catch (Exception e) {
+                    response.sendError(400, e.getMessage());
+                }
+                saveToCookie(response, name);
+                saveToCookie(response, age);
+                response.setStatus(HttpServletResponse.SC_CREATED);
+            } else {
+                response.sendError(400, "Name and Age parameters are not filled");
+            }
+        }
+        pageVariables.put(PAGE_PARAM, saveResult);
+        String page = templateProcessor.getPage(ADDUSER_PAGE_TEMPLATE, pageVariables);
         response.getWriter().println(page);
     }
-    private void saveToServlet(HttpServletRequest request, String requestLogin) {
-        request.getServletContext().setAttribute("login", requestLogin);
-    }
 
-    private void saveToSession(HttpServletRequest request, String requestLogin) {
-        request.getSession().setAttribute("login", requestLogin);
-    }
-
-    private void setOK(HttpServletResponse response) {
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
-
-    private void saveToCookie(HttpServletResponse response, String requestLogin) {
-        response.addCookie(new Cookie("L12.1-login", requestLogin));
-    }
-    private String getPage(String login) throws IOException {
-        Map<String, Object> pageVariables = new HashMap<>();
-        //pageVariables.put(NAME_VARIABLE_NAME, login == null ? "" : login);
-        return templateProcessor.getPage(ADDUSER_PAGE_TEMPLATE, pageVariables);
+    private void saveToCookie(HttpServletResponse response, String cookie) {
+        response.addCookie(new Cookie("ADD_USER", cookie));
     }
 
 }

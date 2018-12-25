@@ -73,6 +73,14 @@ public class UserDataSet extends DataSet {
 
     public UserDataSet(){}
 
+    public UserDataSet(String name, int age) {
+        this.id = 0;
+        this.name = name;
+        this.age = age;
+        this.address = null;
+        this.phones = new ArrayList<>();
+    }
+
     public UserDataSet(long id, String name, int age) {
         this.id = id;
         this.name = name;
@@ -83,6 +91,7 @@ public class UserDataSet extends DataSet {
     public UserDataSet(long id, String name, int age, AddressDataSet address, List phones) {
         this.id = id;
         this.name = name;
+        this.age = age;
         this.address = address;
         this.phones = phones;
     }
