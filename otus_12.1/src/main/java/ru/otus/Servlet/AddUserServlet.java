@@ -48,8 +48,6 @@ public class AddUserServlet extends HttpServlet {
                 } catch (Exception e) {
                     response.sendError(400, e.getMessage());
                 }
-                saveToCookie(response, name);
-                saveToCookie(response, age);
                 response.setStatus(HttpServletResponse.SC_CREATED);
             } else {
                 response.sendError(400, "Name and Age parameters are not filled");
@@ -59,9 +57,4 @@ public class AddUserServlet extends HttpServlet {
         String page = templateProcessor.getPage(ADDUSER_PAGE_TEMPLATE, pageVariables);
         response.getWriter().println(page);
     }
-
-    private void saveToCookie(HttpServletResponse response, String cookie) {
-        response.addCookie(new Cookie("ADD_USER", cookie));
-    }
-
 }

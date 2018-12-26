@@ -40,7 +40,6 @@ public class FindUserServlet extends HttpServlet {
                 try {
                     DataSet user = dbService.load(Long.parseLong(id));
                     loadResult = user.toString();
-                    saveToCookie(response, id);
                     response.setStatus(HttpServletResponse.SC_OK);
                 } catch (Exception e) {
                     response.sendError(400, e.getMessage());
@@ -53,9 +52,5 @@ public class FindUserServlet extends HttpServlet {
         pageVariables.put(PAGE_PARAM, loadResult);
         String page = templateProcessor.getPage(ADDUSER_PAGE_TEMPLATE, pageVariables);
         response.getWriter().println(page);
-    }
-
-    private void saveToCookie(HttpServletResponse response, String requestLogin) {
-        response.addCookie(new Cookie("FIND_USER", requestLogin));
     }
 }
