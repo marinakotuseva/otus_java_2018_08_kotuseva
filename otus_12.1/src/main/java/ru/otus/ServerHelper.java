@@ -13,7 +13,7 @@ import ru.otus.Servlet.InfoServlet;
 import java.io.IOException;
 
 public class ServerHelper {
-    private final static String HTML_FOLDER = "HTML";
+    private final static String HTML_FOLDER = "src/main/HTML";
     private final static int PORT = 8090;
     public Server setServer() throws IOException {
         ResourceHandler resourceHandler = new ResourceHandler();

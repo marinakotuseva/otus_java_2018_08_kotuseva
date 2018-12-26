@@ -14,7 +14,7 @@ import java.util.Map;
  * @author v.chibrikov
  */
 public class TemplateProcessor {
-    private static final String HTML_DIR = "HTML";
+    private static final String HTML_DIR = "src/main/Templates";
 
     private final Configuration configuration;
 
