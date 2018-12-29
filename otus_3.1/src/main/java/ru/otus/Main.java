@@ -8,10 +8,10 @@ public class Main {
 
         MyArrayList<String> s = new MyArrayList<String>();
         MyArrayList<String> s2 = new MyArrayList<String>();
-        s.add("Hello");
+        s.add("World");
         s.add(",");
         s.add(" ");
-        s.add("World");
+        s.add("Hello");
         System.out.println(s.toString());
         System.out.println("Initial s: "+s.toString());
 
@@ -21,6 +21,13 @@ public class Main {
         System.out.println("After AddAll s: "+s.toString());
 
         // Sort
+        Collections.sort(s);
+        System.out.println("After sort s: "+s.toString());
+
+        // Copy
+        s2.add("Smith");
+        Collections.copy(s, s2);
+        System.out.println("After copy s: "+s.toString());
 
 
     }

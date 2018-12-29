@@ -109,11 +109,12 @@ class MyArrayList <T> implements List<T> {
     }
 
     public T get(int index) {
-        throw new UnsupportedOperationException("Not supported");
+        return (T) data[index];
     }
 
     public T set(int index, T element) {
-        throw new UnsupportedOperationException("Not supported");
+        data[index] = element;
+        return get(index);
     }
 
     public void add(int index, T element) {
@@ -133,12 +134,8 @@ class MyArrayList <T> implements List<T> {
     }
 
     public ListIterator<T> listIterator() {
-        ListIterator<T> i = this.listIterator();
-        for (Object e : data) {
-            i.next();
-            i.set((T) e);
-        }
-        throw new UnsupportedOperationException("Not supported");
+        ListIterator iterator = new MyListIterator(this);
+        return iterator;
     }
 
     public ListIterator<T> listIterator(int index) {
