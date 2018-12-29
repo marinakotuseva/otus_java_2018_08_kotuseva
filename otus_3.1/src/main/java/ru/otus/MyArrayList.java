@@ -6,7 +6,7 @@ import java.util.*;
 
 class MyArrayList <T> implements List<T> {
 
-    private static final int DEFAULT_CAPACITY = 1;
+    private static final int DEFAULT_CAPACITY = 10;
     private int elCount;
     private Object[] data;
 

@@ -13,14 +13,15 @@ public class Main {
         s.add(" ");
         s.add("World");
         System.out.println(s.toString());
+        System.out.println("Initial s: "+s.toString());
 
-        s.add("!");
-        //s.sort(null);
-        s.addAll(s2);
-        System.out.println(s.toString());
+        // Add All
+        String[] s3 = new String[]{"!"};
+        Collections.addAll(s, s3);
+        System.out.println("After AddAll s: "+s.toString());
 
-        //java.util.Collections.copy(s, s2);
-        System.out.println(s2.toString());
+        // Sort
+
 
     }
 
