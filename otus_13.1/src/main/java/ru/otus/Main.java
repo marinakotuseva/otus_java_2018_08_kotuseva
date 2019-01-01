@@ -10,7 +10,10 @@ public class Main {
         int arrayLength = 10;
         int threadsMax = 4;
 
-        int[] finalArray = Sorter.sort(arrayLength, threadsMax);
+
+        int[] array = ArraysHelper.getArray(arrayLength);
+
+        int[] finalArray = Sorter.sort(array, threadsMax);
         System.out.println("Sorted array:");
         for (int i = 0; i < finalArray.length; i++) {
             System.out.print(finalArray[i] + ",");

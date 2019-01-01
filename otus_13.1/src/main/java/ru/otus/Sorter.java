@@ -17,9 +17,6 @@ public class Sorter {
         @Override
         public void run() {
             Arrays.sort(array);
-            for (int i = 0; i < array.length; i++) {
-            }
-            //System.out.println("done");
         }
     }
 
@@ -59,8 +56,7 @@ public class Sorter {
         }
     }
 
-    static int[] sort(int arrayLength, int threadsMax){
-        int[] array = ArraysHelper.getArray(arrayLength);
+    static int[] sort(int[] array, int threadsMax){
 
         // Divide array for threads
         List subArrays = ArraysHelper.divideArray(array, threadsMax);
