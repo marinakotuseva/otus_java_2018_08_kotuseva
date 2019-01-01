@@ -27,11 +27,7 @@ class MyArrayList <T> implements List<T> {
     //}
 
     public int size() {
-        int count = 0;
-        for (Integer i  = 0; i < data.length; i++) {
-            ++count;
-        }
-        return count;
+        return elCount;
     }
 
     public int capacity() {
@@ -50,7 +46,12 @@ class MyArrayList <T> implements List<T> {
     }
 
     public Object[] toArray() {
-        return new Object[0];
+        Object[] newArray = new Object[elCount];
+        for (int i = 0; i < elCount; i++) {
+            newArray[i] = data[i];
+        }
+        return newArray;
+        //Arrays.toString(newArray.toArray())
     }
 
     public <T1> T1[] toArray(T1[] a) {
@@ -150,7 +151,7 @@ class MyArrayList <T> implements List<T> {
         String s = "";
         for (int i  = 0; i < data.length; i++) {
             if (data[i] != null){
-                s = s + data[i];
+                s = s + data[i] + ' ';
             }
         }
         return s;

@@ -9,8 +9,6 @@ public class Main {
         MyArrayList<String> s = new MyArrayList<String>();
         MyArrayList<String> s2 = new MyArrayList<String>();
         s.add("World");
-        s.add(",");
-        s.add(" ");
         s.add("Hello");
         System.out.println(s.toString());
         System.out.println("Initial s: "+s.toString());
