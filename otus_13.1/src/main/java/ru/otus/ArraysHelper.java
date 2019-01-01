@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Helper {
+public class ArraysHelper {
     public static int[] merge(int[] arr1, int[] arr2) {
         if (arr1 == null && arr2 == null) return null;
         if (arr1 == null) return arr2.clone();
