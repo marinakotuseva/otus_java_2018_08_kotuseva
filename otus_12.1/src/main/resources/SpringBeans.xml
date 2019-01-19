@@ -10,5 +10,7 @@
         <constructor-arg name="maxElements" value="10" type="int"/>
         <constructor-arg name="lifeTimeMs" value="2000" type="long"/>
     </bean>
+    <bean id="dbService" class="ru.otus.DBService.hibernate.HibernateDBServiceImpl">
+    </bean>
 
 </beans>
