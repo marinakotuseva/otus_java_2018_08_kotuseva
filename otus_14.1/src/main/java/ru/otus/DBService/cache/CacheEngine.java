@@ -1,4 +1,4 @@
-package ru.otus;
+package ru.otus.DBService.cache;
 
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class CacheEngine<K, V> {
             elements.remove(firstKey);
         }
         elements.put(element.getKey(), new SoftReference<>(element));
-        System.out.println("Added to cache " + element.getKey() + " " + element.getValue());
+//        System.out.println("Added to cache " + element.getKey() + " " + element.getValue());
 
     }
 
@@ -37,24 +37,6 @@ public class CacheEngine<K, V> {
 
     public int size(){
         return elements.size();
-    }
-}
-
-
-class MapElement<K,V>{
-    private final K key;
-    private final V value;
-
-    MapElement(K key, V value){
-        this.key = key;
-        this.value = value;
-    }
-
-    public K getKey() {
-        return key;
-    }
-    public V getValue() {
-        return value;
     }
 }
 
