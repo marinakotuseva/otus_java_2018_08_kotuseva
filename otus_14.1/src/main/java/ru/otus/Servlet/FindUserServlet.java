@@ -22,11 +22,11 @@ public class FindUserServlet extends HttpServlet {
     private DBService dbService;
 
 
-    public void init() {
-        ApplicationContext context = new ClassPathXmlApplicationContext(
-                            "SpringBeans.xml");
-        dbService = context.getBean("dbService", HibernateDBServiceImpl.class);
-    }
+//    public void init() {
+//        ApplicationContext context = new ClassPathXmlApplicationContext(
+//                            "SpringBeans.xml");
+//        dbService = context.getBean("dbService", HibernateDBServiceImpl.class);
+//    }
 
     public FindUserServlet(DBService dbService) throws IOException {
         this.templateProcessor = new TemplateProcessor();
