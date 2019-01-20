@@ -1,15 +1,25 @@
 package ru.otus;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.AddressDataSet;
 import ru.otus.DBService.DataSet.PhoneDataSet;
 import ru.otus.DBService.DataSet.UserDataSet;
+import ru.otus.DBService.cache.CacheEngine;
 import ru.otus.DBService.hibernate.HibernateDBServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBHelper {
+    static DBService hibernateDBService;
+
+    public void init() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");
+        hibernateDBService = context.getBean("dbService", HibernateDBServiceImpl.class);
+        System.out.println("dbService BEAN " + hibernateDBService);
+    }
 
     public static DBService InitializeDB() {
 
@@ -50,7 +60,11 @@ public class DBHelper {
         user1.setPhone(ph2);
 
         System.out.println("=== Via hibernate ===");
-        DBService hibernateDBService = new HibernateDBServiceImpl();
+        //DBService hibernateDBService = new HibernateDBServiceImpl();
+        ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");
+        hibernateDBService = context.getBean("dbService", HibernateDBServiceImpl.class);
+        System.out.println("dbService BEAN " + hibernateDBService);
+
         System.out.println("===SAVING===");
         for (UserDataSet user : userList
         ) {
