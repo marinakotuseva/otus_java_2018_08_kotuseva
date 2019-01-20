@@ -59,28 +59,4 @@ public class HibernateDBServiceImpl implements DBService {
         return loadedUser;
 
     }
-
-//    // TODO: where create sessions - here or outside?
-//    public <T extends DataSet> void save(T DataSet) {
-//        Session session = sessionFactory.openSession();
-//        session.save(object);
-//    }
-//    public static void load(Session session, Class clazz, long id) throws SQLException {
-//        DAO dao = new DAO(session);
-//        dao.loadByID(clazz, id);
-//    }
-//
-//    public <T extends DataSet> UserDataSet load(long id, Class<T> clazz){
-//        Session session = sessionFactory.openSession();
-//        UserDataSet loadedUser = session.load(UserDataSet);
-//        return loadedUser;
-//    }
-//
-//    public static void loadAll(Session session, Class clazz) {
-//        DAO dao = new DAO(session);
-//        dao.loadAll(clazz);
-//
-//    }
-
-
 }
