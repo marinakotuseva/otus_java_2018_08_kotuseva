@@ -46,16 +46,16 @@ public class HibernateDBServiceImpl implements DBService {
 
     @Override
     public UserDataSet load(long id) {
-        if(cachedUsers == null) {
-            ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");
-            cachedUsers = context.getBean("cacheEngine", CacheEngine.class);
-        }
-        UserDataSet loadedUser = (UserDataSet) cachedUsers.get(id);
-        if (loadedUser == null){
+//        if(cachedUsers == null) {
+//            ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");
+//            cachedUsers = context.getBean("cacheEngine", CacheEngine.class);
+//        }
+        //UserDataSet loadedUser = (UserDataSet) cachedUsers.get(id);
+        //if (loadedUser == null){
             Session session = sessionFactory.openSession();
             UserDataSetDAO dao = new UserDataSetDAO(session);
-            loadedUser = dao.load(id);
-        }
+            UserDataSet loadedUser = dao.load(id);
+        //}
         return loadedUser;
 
     }

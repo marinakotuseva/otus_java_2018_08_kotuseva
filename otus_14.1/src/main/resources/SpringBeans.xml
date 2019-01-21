@@ -9,5 +9,10 @@
     </bean>
     <bean id="dbService" class="ru.otus.DBService.hibernate.HibernateDBServiceImpl">
     </bean>
+    <bean id="templateProcessor" class="ru.otus.Servlet.TemplateProcessor">
+    </bean>
+    <bean id="dbInitializer" class="ru.otus.DBInitializer">
+        <constructor-arg ref="dbService"/>
+    </bean>
 
 </beans>

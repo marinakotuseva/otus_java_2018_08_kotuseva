@@ -1,8 +1,12 @@
 package ru.otus.Servlet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.UserDataSet;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,14 +20,23 @@ public class AddUserServlet extends HttpServlet {
     private static final String PARAM_AGE = "age";
     private static final String PAGE_PARAM = "userInfo";
     private static final String RESULT_SUCCESS = "User Saved";
-
+    @Autowired
     private final TemplateProcessor templateProcessor;
+
+    @Autowired
     private final DBService dbService;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
 
     public AddUserServlet(DBService dbService) throws IOException {
         this.templateProcessor = new TemplateProcessor();
         this.dbService = dbService;
     }
+
 
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws IOException {

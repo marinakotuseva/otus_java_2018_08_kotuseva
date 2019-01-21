@@ -12,16 +12,20 @@ import ru.otus.DBService.hibernate.HibernateDBServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBHelper {
-    static DBService hibernateDBService;
+public class DBInitializer {
+    private DBService hibernateDBService;
 
     public void init() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");
-        hibernateDBService = context.getBean("dbService", HibernateDBServiceImpl.class);
-        System.out.println("dbService BEAN " + hibernateDBService);
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext(
+                        "SpringBeans.xml");
+        hibernateDBService = context.getBean("dbService", DBService.class);
+    }
+    public DBInitializer(DBService hibernateDBService){
+        this.hibernateDBService = hibernateDBService;
     }
 
-    public static DBService InitializeDB() {
+    public DBService InitializeDB() {
 
         // UserList
         List<UserDataSet> userList = new ArrayList<>();
@@ -61,8 +65,6 @@ public class DBHelper {
 
         System.out.println("=== Via hibernate ===");
         //DBService hibernateDBService = new HibernateDBServiceImpl();
-        ApplicationContext context = new ClassPathXmlApplicationContext("SpringBeans.xml");
-        hibernateDBService = context.getBean("dbService", HibernateDBServiceImpl.class);
         System.out.println("dbService BEAN " + hibernateDBService);
 
         System.out.println("===SAVING===");

@@ -1,11 +1,15 @@
 package ru.otus.Servlet;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.DataSet;
 import ru.otus.DBService.hibernate.HibernateDBServiceImpl;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,16 +21,16 @@ public class FindUserServlet extends HttpServlet {
     private static final String ADDUSER_PAGE_TEMPLATE = "finduser.html";
     private static final String PARAM_ID = "id";
     private static final String PAGE_PARAM = "userInfo";
-
+    @Autowired
     private final TemplateProcessor templateProcessor;
-    private DBService dbService;
+    @Autowired
+    private final DBService dbService;
 
-
-//    public void init() {
-//        ApplicationContext context = new ClassPathXmlApplicationContext(
-//                            "SpringBeans.xml");
-//        dbService = context.getBean("dbService", HibernateDBServiceImpl.class);
-//    }
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
 
     public FindUserServlet(DBService dbService) throws IOException {
         this.templateProcessor = new TemplateProcessor();
