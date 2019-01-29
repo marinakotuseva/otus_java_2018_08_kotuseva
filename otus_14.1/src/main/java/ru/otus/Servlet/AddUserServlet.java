@@ -32,7 +32,7 @@ public class AddUserServlet extends HttpServlet {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
-    public AddUserServlet(DBService dbService) throws IOException {
+    public AddUserServlet(DBService dbService) {
         this.templateProcessor = new TemplateProcessor();
         this.dbService = dbService;
     }
