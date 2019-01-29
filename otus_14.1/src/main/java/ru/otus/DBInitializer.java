@@ -15,13 +15,8 @@ import java.util.List;
 public class DBInitializer {
     private DBService hibernateDBService;
 
-    public void init() {
-        ApplicationContext context =
-                new ClassPathXmlApplicationContext(
-                        "SpringBeans.xml");
-        hibernateDBService = context.getBean("dbService", DBService.class);
-    }
     public DBInitializer(DBService hibernateDBService){
+
         this.hibernateDBService = hibernateDBService;
     }
 

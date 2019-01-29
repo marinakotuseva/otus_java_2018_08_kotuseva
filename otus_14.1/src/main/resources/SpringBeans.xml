@@ -1,7 +1,14 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="ru.otus"></context:component-scan>
+    <context:annotation-config/>
+    <context:spring-configured/>
 
     <bean id="cacheEngine" class="ru.otus.DBService.cache.CacheEngine">
         <constructor-arg value="10" type="int"/>
@@ -9,10 +16,15 @@
     </bean>
     <bean id="dbService" class="ru.otus.DBService.hibernate.HibernateDBServiceImpl">
     </bean>
-    <bean id="templateProcessor" class="ru.otus.Servlet.TemplateProcessor">
+    <bean id="freeMarkerConfigurationFactory"
+          class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <property name="templateLoaderPaths" value="/WEB-INF/classes/Templates"/>
     </bean>
-    <bean id="dbInitializer" class="ru.otus.DBInitializer">
-        <constructor-arg ref="dbService"/>
+    <bean id="templateProcessor" class="ru.otus.Servlet.TemplateProcessor">
+        <property name="configuration" ref="freeMarkerConfigurationFactory"/>
+    </bean>
+    <bean id="dbInitializer" class="ru.otus.DBInitializer" init-method="InitializeDB">
+        <constructor-arg ref="dbService" />
     </bean>
 
 </beans>

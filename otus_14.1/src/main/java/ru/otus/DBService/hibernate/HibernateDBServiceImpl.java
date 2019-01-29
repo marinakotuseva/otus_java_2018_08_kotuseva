@@ -3,8 +3,6 @@ package ru.otus.DBService.hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.DataSet;
 import ru.otus.DBService.DataSet.UserDataSet;
@@ -17,9 +15,9 @@ public class HibernateDBServiceImpl implements DBService {
     private SessionFactory sessionFactory;
     private CacheEngine cachedUsers;
 
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
+//    public SessionFactory getSessionFactory() {
+//        return sessionFactory;
+//    }
 
     public HibernateDBServiceImpl() {
         SessionFactory sessionFactory = new Configuration().configure()

@@ -1,6 +1,7 @@
 package ru.otus.Servlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.UserDataSet;
@@ -14,23 +15,25 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Configurable
 public class InfoServlet extends HttpServlet {
     private static final String INFO_PAGE_TEMPLATE = "info.html";
     @Autowired
     private TemplateProcessor templateProcessor;
     @Autowired
-    private final DBService dbService;
+    private DBService dbService;
+
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-
     public InfoServlet(DBService dbService) throws IOException {
         this.templateProcessor = new TemplateProcessor();
         this.dbService = dbService;
+    }
+    public InfoServlet(){
     }
 
 

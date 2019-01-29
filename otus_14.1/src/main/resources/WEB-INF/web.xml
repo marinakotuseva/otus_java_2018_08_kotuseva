@@ -2,8 +2,17 @@
 
 <web-app>
 
-    <display-name>14.1</display-name>
+    <display-name>Home</display-name>
     <description>Example of war file</description>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:SpringBeans.xml</param-value>
+    </context-param>
 
     <servlet>
         <servlet-name>AddUserServlet</servlet-name>
@@ -11,7 +20,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>AddUserServlet</servlet-name>
-        <url-pattern>/AddUser</url-pattern>
+        <url-pattern>/adduser</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -20,7 +29,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>FindUserServlet</servlet-name>
-        <url-pattern>/FindUser</url-pattern>
+        <url-pattern>/finduser</url-pattern>
     </servlet-mapping>
 
 
@@ -30,8 +39,12 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>InfoServlet</servlet-name>
-        <url-pattern>/Info</url-pattern>
+        <url-pattern>/info</url-pattern>
     </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 
 
 </web-app>

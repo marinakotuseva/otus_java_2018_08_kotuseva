@@ -1,6 +1,7 @@
 package ru.otus.Servlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.UserDataSet;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+@Configurable
 public class AddUserServlet extends HttpServlet {
     private static final String ADDUSER_PAGE_TEMPLATE = "adduser.html";
     private static final String PARAM_NAME = "name";
@@ -21,10 +22,9 @@ public class AddUserServlet extends HttpServlet {
     private static final String PAGE_PARAM = "userInfo";
     private static final String RESULT_SUCCESS = "User Saved";
     @Autowired
-    private final TemplateProcessor templateProcessor;
-
+    private TemplateProcessor templateProcessor;
     @Autowired
-    private final DBService dbService;
+    private DBService dbService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -36,6 +36,9 @@ public class AddUserServlet extends HttpServlet {
         this.templateProcessor = new TemplateProcessor();
         this.dbService = dbService;
     }
+    public AddUserServlet() {
+    }
+
 
 
     public void doGet(HttpServletRequest request,

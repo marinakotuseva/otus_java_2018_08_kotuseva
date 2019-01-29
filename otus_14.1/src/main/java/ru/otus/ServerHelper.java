@@ -8,6 +8,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.DBService.DBService;
+import ru.otus.DBService.hibernate.HibernateDBServiceImpl;
 import ru.otus.Servlet.AddUserServlet;
 import ru.otus.Servlet.FindUserServlet;
 import ru.otus.Servlet.InfoServlet;
@@ -21,11 +22,8 @@ public class ServerHelper {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase(HTML_FOLDER);
 
-        //DBInitializer dbInitializer = new DBInitializer();
-        ApplicationContext classPathContext =
-                new ClassPathXmlApplicationContext(
-                        "SpringBeans.xml");
-        DBInitializer dbInitializer = classPathContext.getBean("dbInitializer", DBInitializer.class);
+        DBService dbService = new HibernateDBServiceImpl();
+        DBInitializer dbInitializer = new DBInitializer(dbService);
 
         DBService hibernateDBService = dbInitializer.InitializeDB();
 

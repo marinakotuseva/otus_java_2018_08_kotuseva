@@ -3,6 +3,7 @@ package ru.otus.Servlet;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,17 +11,22 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
-/**
- * @author v.chibrikov
- */
 public class TemplateProcessor {
-    private static final String HTML_DIR = "src/main/Templates";
+    private static final String HTML_DIR = "Templates";
 
-    private final Configuration configuration;
 
-    public TemplateProcessor() throws IOException {
+
+    private Configuration configuration;
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public TemplateProcessor() {
         configuration = new Configuration(Configuration.VERSION_2_3_28);
-        configuration.setDirectoryForTemplateLoading(new File(HTML_DIR));
+        configuration.setClassForTemplateLoading(this.getClass(), HTML_DIR);
         configuration.setDefaultEncoding("UTF-8");
     }
 
@@ -34,10 +40,5 @@ public class TemplateProcessor {
         }
     }
 
-    String getPage(String filename) throws IOException {
-        try (Writer stream = new StringWriter();) {
-            Template template = configuration.getTemplate(filename);
-            return stream.toString();
-        }
-    }
 }
+
