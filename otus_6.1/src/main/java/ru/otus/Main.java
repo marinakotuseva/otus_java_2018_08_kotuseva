@@ -24,23 +24,6 @@ public class Main {
         for (int i =0; i< addToCacheSize; i++){
             System.out.println(cache.get(i));
         }
-
-//        List<SoftReference<BigObject>> references = new ArrayList<>(cacheSize);
-//
-  //      for (int k = 0; k < cacheSize; k++) {
-    //        references.add(new SoftReference<>(new BigObject()));
-      //  }
-        //System.out.println("Soft references before GC: " + cacheSize);
-
-        //Thread.sleep(1000);
-        //System.gc();
-
-        //int sum = 0;
-        //for (int k = 0; k < cacheSize; k++) {
-        //    if (references.get(k).get() != null) sum++;
-        //}
-
-        //System.out.println("Soft references after GC: " + sum);
     }
 
 }

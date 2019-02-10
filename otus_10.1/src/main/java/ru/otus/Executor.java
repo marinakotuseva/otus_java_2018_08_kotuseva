@@ -16,10 +16,11 @@ public class Executor {
     public  <T extends DataSet> void save(T object) {
 
         Class clazz = object.getClass();
-        String insertIntoTableQuery = ClassMetaDataHolder.getInsertIntoTableQuery(clazz);
-        LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
+        ClassMetaDataHolder classData = new ClassMetaDataHolder();
+        String insertIntoTableQuery = classData.getInsertIntoTableQuery(clazz);
+        LinkedHashMap<String, Field> fields = classData.getClassFields(clazz);
 
-        Connection conn = DBService.getConnection();
+        Connection conn = DBHelper.getConnection();
         try {
             PreparedStatement s = conn.prepareStatement(insertIntoTableQuery);
             var i =1;
@@ -54,11 +55,12 @@ public class Executor {
     public  <T extends DataSet> UserDataSet load(long id, Class<T> clazz){
 
         UserDataSet loadedUser = null;
-        List<Class> constrParamsList = ClassMetaDataHolder.getConstructorParams(clazz);
-        String SelectByIdQuery = ClassMetaDataHolder.getSelectByIdQuery(clazz);
+        ClassMetaDataHolder classData = new ClassMetaDataHolder();
+        List<Class> constrParamsList = classData.getConstructorParams(clazz);
+        String SelectByIdQuery = classData.getSelectByIdQuery(clazz);
 
 
-        Connection conn = DBService.getConnection();
+        Connection conn = DBHelper.getConnection();
         try {
             PreparedStatement s = conn.prepareStatement(SelectByIdQuery);
             s.setLong(1, id);
@@ -70,7 +72,7 @@ public class Executor {
             constrParams = constrParamsList.toArray(constrParams);
 
             List<Object> constrParamsValues = new ArrayList<Object>();
-            LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
+            LinkedHashMap<String, Field> fields = classData.getClassFields(clazz);
             for (Map.Entry entry: fields.entrySet()){
                 Object sqlValue;
                 String fName = (String)entry.getKey();

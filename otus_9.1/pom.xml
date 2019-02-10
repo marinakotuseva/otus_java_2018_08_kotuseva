@@ -7,6 +7,10 @@
     <groupId>ru.otus</groupId>
     <artifactId>otus_9.1</artifactId>
     <version>1117</version>
+    <properties>
+        <maven.compiler.target>1.11</maven.compiler.target>
+        <maven.compiler.source>1.11</maven.compiler.source>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
@@ -19,10 +23,6 @@
             <version>2.8.5</version>
         </dependency>
     </dependencies>
-    <properties>
-        <maven.compiler.target>1.11</maven.compiler.target>
-        <maven.compiler.source>1.11</maven.compiler.source>
-    </properties>
 
 
 </project>

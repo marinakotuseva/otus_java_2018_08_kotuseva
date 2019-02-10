@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ClassMetaDataHolder {
-    static Map<Class, LinkedHashMap<String, Field>> cachedClassFields;
-    static Map<Class, String> cachedInsertIntoQuery;
-    static Map<Class, String> cachedSelectByIdQuery;
-    static Map<Class, String> cachedTableName;
+    private Map<Class, LinkedHashMap<String, Field>> cachedClassFields;
+    private Map<Class, String> cachedInsertIntoQuery;
+    private Map<Class, String> cachedSelectByIdQuery;
+    private Map<Class, String> cachedTableName;
 
 
-    public static LinkedHashMap<String, Field> getClassFields(Class clazz){
+    public LinkedHashMap<String, Field> getClassFields(Class clazz){
 
         boolean addClassFields = false;
         if(cachedClassFields == null){
@@ -33,7 +33,7 @@ public class ClassMetaDataHolder {
         return cachedClassFields.get(clazz);
     }
 
-    public static String getInsertIntoTableQuery(Class clazz){
+    public String getInsertIntoTableQuery(Class clazz){
         boolean addQuery= false;
         if(cachedInsertIntoQuery == null) {
             cachedInsertIntoQuery = new LinkedHashMap<>();
@@ -50,7 +50,7 @@ public class ClassMetaDataHolder {
             insertIntoTableQuery.append("(");
             insertIntoTableValues.append(" values(");
 
-            LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
+            LinkedHashMap<String, Field> fields = this.getClassFields(clazz);
             for (Map.Entry entry: fields.entrySet()) {
                 Object fName = entry.getKey();
                 insertIntoTableQuery.append(fName + ",");
@@ -70,7 +70,7 @@ public class ClassMetaDataHolder {
         return cachedInsertIntoQuery.get(clazz);
     }
 
-    public static String getSelectByIdQuery(Class clazz){
+    public String getSelectByIdQuery(Class clazz){
         boolean addQuery= false;
 
         if (cachedSelectByIdQuery == null) {
@@ -100,7 +100,7 @@ public class ClassMetaDataHolder {
         return cachedSelectByIdQuery.get(clazz);
     }
 
-    public static String getTableNameForClass(Class clazz){
+    public String getTableNameForClass(Class clazz){
         if (cachedTableName == null){
             cachedTableName = new LinkedHashMap<Class, String>();
             cachedTableName.put(clazz, clazz.getName().replace(clazz.getPackageName()+".", ""));
@@ -108,10 +108,10 @@ public class ClassMetaDataHolder {
         return cachedTableName.get(clazz);
     }
 
-    public static List<Class> getConstructorParams(Class clazz){
+    public List<Class> getConstructorParams(Class clazz){
 
         List<Class> constrParamsList = new ArrayList<Class>();
-        LinkedHashMap<String, Field> fields = ClassMetaDataHolder.getClassFields(clazz);
+        LinkedHashMap<String, Field> fields = this.getClassFields(clazz);
         for (Map.Entry entry: fields.entrySet()
         ) {
             Object fName = entry.getKey();

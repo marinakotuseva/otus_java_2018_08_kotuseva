@@ -1,8 +1,5 @@
 package ru.otus;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 

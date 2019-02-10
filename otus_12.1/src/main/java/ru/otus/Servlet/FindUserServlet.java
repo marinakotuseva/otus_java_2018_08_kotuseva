@@ -1,19 +1,14 @@
 package ru.otus.Servlet;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.otus.DBService.DBService;
 import ru.otus.DBService.DataSet.DataSet;
-import ru.otus.DBService.DataSet.UserDataSet;
 import ru.otus.DBService.hibernate.HibernateDBServiceImpl;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FindUserServlet extends HttpServlet {
@@ -24,12 +19,6 @@ public class FindUserServlet extends HttpServlet {
     private final TemplateProcessor templateProcessor;
     private DBService dbService;
 
-
-    public void init() {
-        ApplicationContext context = new ClassPathXmlApplicationContext(
-                            "SpringBeans.xml");
-        dbService = context.getBean("dbService", HibernateDBServiceImpl.class);
-    }
 
     public FindUserServlet(DBService dbService) throws IOException {
         this.templateProcessor = new TemplateProcessor();

@@ -3,15 +3,13 @@ package ru.otus;
 
 import ru.otus.DataSet.UserDataSet;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class Main {
     public static void main(String[] args) {
 
         Executor ex = new Executor();
 
-        DBService.createTableForClass(UserDataSet.class);
-        DBService.clearTable(UserDataSet.class);
+        DBHelper.createTableForClass(UserDataSet.class);
+        DBHelper.clearTable(UserDataSet.class);
         System.out.println("===");
 
         for (int i = 0; i < 10; i++) {
