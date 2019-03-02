@@ -6,11 +6,11 @@
 3. Добавить в UsersDataSet поля:
 адресс (OneToOne) 
 class AddressDataSet{
-private String street;
+    private String street;
 }
 и телефон* (OneToMany)
 class PhoneDataSet{
-private String number;
+    private String number;
 }
 Добавить соответствущие датасеты и DAO. 
 
